@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concierge & Contact — OXYLACY</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- Top Announcement Bar -->
+    <div class="top-bar">
+        <div class="container top-bar-content">
+            <p>Complimentary Global Shipping on Orders Over $200</p>
+            <div class="currency-selector">
+                <span>USD ($) <i class="fa-solid fa-angle-down"></i></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="main-header">
+        <div class="container header-container">
+            <button class="mobile-menu-btn" id="menuToggle">
+                <i class="fa-solid fa-bars-staggered"></i>
+            </button>
+
+            <!-- Brand Logo -->
+            <a href="index.html" class="brand-logo">
+                <img src="image/logo/logo.jpeg" alt="OXYLACY Logo">
+                <span class="logo-text">OXYLACY</span>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="nav-menu" id="navMenu">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="shop.html">Catalog</a></li>
+                    <li><a href="about.html">Our Story</a></li>
+                    <li><a href="contact.html" class="active">Contact</a></li>
+                </ul>
+            </nav>
+
+            <!-- Header Action Icons -->
+            <div class="header-actions">
+                <a href="#" class="icon-link"><i class="fa-solid fa-magnifying-glass"></i></a>
+                <a href="#" class="icon-link"><i class="fa-regular fa-heart"></i></a>
+                <a href="cart.html" class="icon-link cart-link">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span class="cart-count">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contact Page Hero -->
+    <section class="shop-hero">
+        <div class="container text-center">
+            <span class="section-subtitle">PRIVATE CLIENT SERVICES</span>
+            <h1 class="section-title">Concierge & Inquiries</h1>
+            <p class="shop-desc">Our dedicated atelier specialists are available 24/7 for bespoke commissions and client
+                assistance.</p>
+        </div>
+    </section>
+
+    <!-- Contact Main Section -->
+    <section class="contact-section">
+        <div class="container">
+            <div class="contact-grid">
+                <!-- Left: Contact Form -->
+                <div class="contact-form-box">
+                    <h2 class="contact-heading">Send a Private Message</h2>
+                    <form class="luxury-form" onsubmit="event.preventDefault();">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" placeholder="Lord / Lady / Full Name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="email" placeholder="client@domain.com" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Inquiry Subject</label>
+                            <select class="luxury-input-select">
+                                <option>Bespoke Horology Commission</option>
+                                <option>Apparel & Tailoring Sizing</option>
+                                <option>Order Status & Private Delivery</option>
+                                <option>Warranty & Certified Repairs</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Your Message</label>
+                            <textarea rows="5" placeholder="Detail your inquiry or custom request..."
+                                required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary send-msg-btn">Transmit Inquiry</button>
+                    </form>
+                </div>
+
+                <!-- Right: Atelier Direct Info -->
+                <!-- Right: Atelier Direct Info -->
+                <div class="contact-info-box">
+                    <h2 class="contact-heading">Concierge & Support</h2>
+
+                    <div class="info-card">
+                        <div class="info-icon"><i class="fa-solid fa-earth-americas"></i></div>
+                        <div class="info-details">
+                            <h4>Digital Flagship Atelier</h4>
+                            <p>Operating from Dhaka, Bangladesh<br>Nationwide Doorstep Delivery Available</p>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-icon"><i class="fa-solid fa-envelope"></i></div>
+                        <div class="info-details">
+                            <h4>Direct Email</h4>
+                            <p><a href="mailto:oxylacy@gmail.com"
+                                    style="color: inherit; text-decoration: none;">oxylacy@gmail.com</a></p>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-icon"><i class="fa-brands fa-whatsapp"></i></div>
+                        <div class="info-details">
+                            <h4>WhatsApp & Hotline</h4>
+                            <p><a href="https://wa.me/8801604274706" target="_blank"
+                                    style="color: inherit; text-decoration: none;">+880 1604-274706</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container footer-grid">
+            <div class="footer-col brand-col">
+                <h3 class="footer-logo">OXYLACY</h3>
+                <p>An international luxury & modern lifestyle atelier. Curating timeless elegance across watches,
+                    fashion, and beyond.</p>
+                <div class="social-links">
+                    <!-- Facebook -->
+                    <a href="https://www.facebook.com/share/19SokyFDkE" target="_blank" rel="noopener noreferrer"
+                        aria-label="Facebook">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </a>
+                    <!-- Instagram -->
+                    <a href="https://www.instagram.com/oxylacy" target="_blank" rel="noopener noreferrer"
+                        aria-label="Instagram">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    <!-- TikTok -->
+                    <a href="https://www.tiktok.com/@oxylacy" target="_blank" rel="noopener noreferrer"
+                        aria-label="TikTok">
+                        <i class="fa-brands fa-tiktok"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Collections</h4>
+                <ul>
+                    <li><a href="shop.html">Chronographs</a></li>
+                    <li><a href="shop.html">Minimal Watches</a></li>
+                    <li><a href="shop.html">Modern Apparel</a></li>
+                    <li><a href="shop.html">Leather Goods</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Customer Care</h4>
+                <ul>
+                    <li><a href="contact.html">Track Order</a></li>
+                    <li><a href="contact.html">Warranty & Repairs</a></li>
+                    <li><a href="contact.html">Shipping & Returns</a></li>
+                    <li><a href="contact.html">Client Services</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>VIP Newsletter</h4>
+                <p>Join the inner circle for private releases and exclusive previews.</p>
+                <form class="newsletter-form" onsubmit="event.preventDefault();">
+                    <input type="email" placeholder="Enter your email" required>
+                    <button type="submit"><i class="fa-solid fa-arrow-right"></i></button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container bottom-content">
+                <p>&copy; 2026 OXYLACY. All Rights Reserved.</p>
+                <div class="legal-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom Script -->
+    <script src="js/script.js"></script>
+</body>
+
+</html>

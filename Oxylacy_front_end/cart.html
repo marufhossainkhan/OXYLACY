@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Shopping Bag — OXYLACY</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- Top Announcement Bar -->
+    <div class="top-bar">
+        <div class="container top-bar-content">
+            <p>Complimentary Global Shipping on Orders Over $200</p>
+            <div class="currency-selector">
+                <span>USD ($) <i class="fa-solid fa-angle-down"></i></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="main-header">
+        <div class="container header-container">
+            <button class="mobile-menu-btn" id="menuToggle">
+                <i class="fa-solid fa-bars-staggered"></i>
+            </button>
+
+            <!-- Brand Logo -->
+            <a href="index.html" class="brand-logo">
+                <img src="image/logo/logo.jpeg" alt="OXYLACY Logo">
+                <span class="logo-text">OXYLACY</span>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="nav-menu" id="navMenu">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="shop.html">Catalog</a></li>
+                    <li><a href="about.html">Our Story</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+
+            <!-- Header Action Icons -->
+            <div class="header-actions">
+                <a href="#" class="icon-link"><i class="fa-solid fa-magnifying-glass"></i></a>
+                <a href="#" class="icon-link"><i class="fa-regular fa-heart"></i></a>
+                <a href="cart.html" class="icon-link cart-link">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span class="cart-count">2</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Cart Page Hero Banner -->
+    <section class="shop-hero">
+        <div class="container text-center">
+            <span class="section-subtitle">YOUR SELECTIONS</span>
+            <h1 class="section-title">Atelier Shopping Bag</h1>
+            <p class="shop-desc">Review your curated luxury pieces before proceeding to insured private checkout.</p>
+        </div>
+    </section>
+
+    <!-- Cart Main Content -->
+    <section class="cart-section">
+        <div class="container">
+            <div class="cart-grid-layout">
+                <!-- Left: Cart Items Table -->
+                <div class="cart-items-container">
+                    <div class="cart-table-header">
+                        <span>Creation</span>
+                        <span>Quantity</span>
+                        <span>Subtotal</span>
+                        <span></span>
+                    </div>
+
+                    <!-- Item 1 -->
+                    <div class="cart-item-row">
+                        <div class="cart-item-info">
+                            <img src="image/products/watch-2.jpg" alt="Aethelgard Chronograph" class="cart-item-img">
+                            <div class="cart-item-meta">
+                                <span class="item-category">Timepieces</span>
+                                <h4 class="item-name">Aethelgard Chronograph</h4>
+                                <span class="item-unit-price">$450.00</span>
+                            </div>
+                        </div>
+                        <div class="cart-item-qty">
+                            <div class="quantity-wrapper">
+                                <button class="qty-btn" type="button">-</button>
+                                <input type="number" value="1" min="1" max="10" class="qty-input">
+                                <button class="qty-btn" type="button">+</button>
+                            </div>
+                        </div>
+                        <div class="cart-item-total">$450.00</div>
+                        <button class="remove-item-btn" title="Remove creation"><i
+                                class="fa-solid fa-xmark"></i></button>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="cart-item-row">
+                        <div class="cart-item-info">
+                            <img src="image/products/belt-1.jpg" alt="Artisanal Heritage Belt" class="cart-item-img">
+                            <div class="cart-item-meta">
+                                <span class="item-category">Leather Goods</span>
+                                <h4 class="item-name">Artisanal Heritage Belt</h4>
+                                <span class="item-unit-price">$120.00</span>
+                            </div>
+                        </div>
+                        <div class="cart-item-qty">
+                            <div class="quantity-wrapper">
+                                <button class="qty-btn" type="button">-</button>
+                                <input type="number" value="1" min="1" max="10" class="qty-input">
+                                <button class="qty-btn" type="button">+</button>
+                            </div>
+                        </div>
+                        <div class="cart-item-total">$120.00</div>
+                        <button class="remove-item-btn" title="Remove creation"><i
+                                class="fa-solid fa-xmark"></i></button>
+                    </div>
+
+                    <div class="cart-actions-row">
+                        <a href="shop.html" class="btn btn-outline continue-shopping-btn">← Continue Browsing</a>
+                    </div>
+                </div>
+
+                <!-- Right: Summary & Checkout Box -->
+                <div class="cart-summary-box">
+                    <h3 class="summary-title">Order Summary</h3>
+
+                    <div class="summary-row">
+                        <span>Bag Subtotal</span>
+                        <span class="summary-val">$570.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Complimentary Shipping</span>
+                        <span class="summary-val text-gold">FREE ($0.00)</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Estimated Tax & Duty</span>
+                        <span class="summary-val">$0.00</span>
+                    </div>
+
+                    <!-- Promo Code Input -->
+                    <div class="promo-box">
+                        <input type="text" placeholder="Promo Code / Privilege Key" class="promo-input">
+                        <button type="button" class="promo-btn">Apply</button>
+                    </div>
+
+                    <div class="summary-total-row">
+                        <span>Total Due</span>
+                        <span class="total-price">$570.00</span>
+                    </div>
+
+                    <a href="checkout.html" class="btn btn-primary checkout-btn">Proceed To Checkout</a>
+
+                    <div class="secure-checkout-badge">
+                        <i class="fa-solid fa-lock"></i>
+                        <span>Encrypted 256-Bit SSL Insured Checkout</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer matching index.html structure -->
+    <footer class="main-footer">
+        <div class="container footer-grid">
+            <div class="footer-col brand-col">
+                <h3 class="footer-logo">OXYLACY</h3>
+                <p>An international luxury & modern lifestyle atelier. Curating timeless elegance across watches,
+                    fashion, and beyond.</p>
+                <div class="social-links">
+                    <!-- Facebook -->
+                    <a href="https://www.facebook.com/share/19SokyFDkE" target="_blank" rel="noopener noreferrer"
+                        aria-label="Facebook">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </a>
+                    <!-- Instagram -->
+                    <a href="https://www.instagram.com/oxylacy" target="_blank" rel="noopener noreferrer"
+                        aria-label="Instagram">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    <!-- TikTok -->
+                    <a href="https://www.tiktok.com/@oxylacy" target="_blank" rel="noopener noreferrer"
+                        aria-label="TikTok">
+                        <i class="fa-brands fa-tiktok"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Collections</h4>
+                <ul>
+                    <li><a href="shop.html">Chronographs</a></li>
+                    <li><a href="shop.html">Minimal Watches</a></li>
+                    <li><a href="shop.html">Modern Apparel</a></li>
+                    <li><a href="shop.html">Leather Goods</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Customer Care</h4>
+                <ul>
+                    <li><a href="contact.html">Track Order</a></li>
+                    <li><a href="contact.html">Warranty & Repairs</a></li>
+                    <li><a href="contact.html">Shipping & Returns</a></li>
+                    <li><a href="contact.html">Client Services</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>VIP Newsletter</h4>
+                <p>Join the inner circle for private releases and exclusive previews.</p>
+                <form class="newsletter-form" onsubmit="event.preventDefault();">
+                    <input type="email" placeholder="Enter your email" required>
+                    <button type="submit"><i class="fa-solid fa-arrow-right"></i></button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container bottom-content">
+                <p>&copy; 2026 OXYLACY. All Rights Reserved.</p>
+                <div class="legal-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom Script -->
+    <script src="js/script.js"></script>
+</body>
+
+</html>

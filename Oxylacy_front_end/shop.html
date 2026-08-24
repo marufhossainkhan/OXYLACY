@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Catalog — OXYLACY | Timeless Luxury</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- Top Announcement Bar -->
+    <div class="top-bar">
+        <div class="container top-bar-content">
+            <p>Complimentary Global Shipping on Orders Over $200</p>
+            <div class="currency-selector">
+                <span>USD ($) <i class="fa-solid fa-angle-down"></i></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="main-header">
+        <div class="container header-container">
+            <button class="mobile-menu-btn" id="menuToggle">
+                <i class="fa-solid fa-bars-staggered"></i>
+            </button>
+
+            <!-- Brand Logo -->
+            <a href="index.html" class="brand-logo">
+                <img src="image/logo/logo.jpeg" alt="OXYLACY Logo">
+                <span class="logo-text">OXYLACY</span>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="nav-menu" id="navMenu">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="shop.html" class="active">Catalog</a></li>
+                    <li><a href="about.html">Our Story</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+
+            <!-- Header Action Icons -->
+            <div class="header-actions">
+                <a href="#" class="icon-link"><i class="fa-solid fa-magnifying-glass"></i></a>
+                <a href="#" class="icon-link"><i class="fa-regular fa-heart"></i></a>
+                <a href="cart.html" class="icon-link cart-link">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span class="cart-count">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Shop Banner -->
+    <section class="shop-hero">
+        <div class="container text-center">
+            <span class="section-subtitle">THE COMPLETE ATELIER</span>
+            <h1 class="section-title">Curated Masterpieces</h1>
+            <p class="shop-desc">Explore refined horology, bespoke tailoring, and artisanal leather accessories.</p>
+        </div>
+    </section>
+
+    <!-- Shop Main Section -->
+    <section class="shop-main-section">
+        <div class="container">
+            <!-- Filter Bar -->
+            <div class="filter-wrapper">
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">All Creations</button>
+                    <button class="filter-btn" data-filter="timepieces">Timepieces</button>
+                    <button class="filter-btn" data-filter="apparel">Apparel</button>
+                    <button class="filter-btn" data-filter="leather">Leather Goods</button>
+                </div>
+                <div class="sort-wrapper">
+                    <select class="luxury-select">
+                        <option value="featured">Featured First</option>
+                        <option value="low-to-high">Price: Low to High</option>
+                        <option value="high-to-low">Price: High to Low</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="products-grid">
+                <!-- 1. Men's Watch -->
+                <div class="product-card" data-category="timepieces">
+                    <div class="product-img-box">
+                        <img src="image/products/watch-2.jpg" alt="Aethelgard Chronograph" class="product-img">
+                        <span class="product-badge">Exclusive</span>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">Timepieces</span>
+                        <h3 class="product-name">Aethelgard Chronograph</h3>
+                        <p class="product-price">$450.00</p>
+                        <a href="product-details.html" class="btn-product">View Details</a>
+                    </div>
+                </div>
+
+                <!-- 2. Men's Tuxedo / Suit -->
+                <div class="product-card" data-category="apparel">
+                    <div class="product-img-box">
+                        <img src="image/products/suite-1.jpg" alt="Midnight Bespoke Tuxedo" class="product-img">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">Apparel</span>
+                        <h3 class="product-name">Midnight Bespoke Tuxedo</h3>
+                        <p class="product-price">$620.00</p>
+                        <a href="product-details.html" class="btn-product">View Details</a>
+                    </div>
+                </div>
+
+                <!-- 3. Leather Belt -->
+                <div class="product-card" data-category="leather">
+                    <div class="product-img-box">
+                        <img src="image/products/belt-1.jpg" alt="Artisanal Heritage Belt" class="product-img">
+                        <span class="product-badge">Handmade</span>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">Leather Goods</span>
+                        <h3 class="product-name">Artisanal Heritage Belt</h3>
+                        <p class="product-price">$120.00</p>
+                        <a href="product-details.html" class="btn-product">View Details</a>
+                    </div>
+                </div>
+
+                <!-- 4. Women's Watch -->
+                <div class="product-card" data-category="timepieces">
+                    <div class="product-img-box">
+                        <img src="image/products/watch-female-2.jpg" alt="Celeste Diamond Edition" class="product-img">
+                        <span class="product-badge">New</span>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">Timepieces</span>
+                        <h3 class="product-name">Celeste Diamond Edition</h3>
+                        <p class="product-price">$380.00</p>
+                        <a href="product-details.html" class="btn-product">View Details</a>
+                    </div>
+                </div>
+
+                <!-- 5. Tailored Plaid Suit -->
+                <div class="product-card" data-category="apparel">
+                    <div class="product-img-box">
+                        <img src="image/products/suite-2.jpg" alt="Heritage Check Suit" class="product-img">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">Apparel</span>
+                        <h3 class="product-name">Heritage Tailored Suit</h3>
+                        <p class="product-price">$540.00</p>
+                        <a href="product-details.html" class="btn-product">View Details</a>
+                    </div>
+                </div>
+
+                <!-- 6. Leather Card Wallet -->
+                <div class="product-card" data-category="leather">
+                    <div class="product-img-box">
+                        <img src="image/products/wallet-1.jpg" alt="Slim Vintage Cardholder" class="product-img">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">Leather Goods</span>
+                        <h3 class="product-name">Vintage Minimalist Wallet</h3>
+                        <p class="product-price">$85.00</p>
+                        <a href="product-details.html" class="btn-product">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container footer-grid">
+            <div class="footer-col brand-col">
+                <h3 class="footer-logo">OXYLACY</h3>
+                <p>An international luxury & modern lifestyle atelier. Curating timeless elegance across watches,
+                    fashion, and beyond.</p>
+                <div class="social-links">
+                    <!-- Facebook -->
+                    <a href="https://www.facebook.com/share/19SokyFDkE" target="_blank" rel="noopener noreferrer"
+                        aria-label="Facebook">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </a>
+                    <!-- Instagram -->
+                    <a href="https://www.instagram.com/oxylacy" target="_blank" rel="noopener noreferrer"
+                        aria-label="Instagram">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    <!-- TikTok -->
+                    <a href="https://www.tiktok.com/@oxylacy" target="_blank" rel="noopener noreferrer"
+                        aria-label="TikTok">
+                        <i class="fa-brands fa-tiktok"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Collections</h4>
+                <ul>
+                    <li><a href="shop.html">Chronographs</a></li>
+                    <li><a href="shop.html">Minimal Watches</a></li>
+                    <li><a href="shop.html">Modern Apparel</a></li>
+                    <li><a href="shop.html">Leather Goods</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Customer Care</h4>
+                <ul>
+                    <li><a href="contact.html">Track Order</a></li>
+                    <li><a href="contact.html">Warranty & Repairs</a></li>
+                    <li><a href="contact.html">Shipping & Returns</a></li>
+                    <li><a href="contact.html">Client Services</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>VIP Newsletter</h4>
+                <p>Join the inner circle for private releases and exclusive previews.</p>
+                <form class="newsletter-form" onsubmit="event.preventDefault();">
+                    <input type="email" placeholder="Enter your email" required>
+                    <button type="submit"><i class="fa-solid fa-arrow-right"></i></button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container bottom-content">
+                <p>&copy; 2026 OXYLACY. All Rights Reserved.</p>
+                <div class="legal-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom Script -->
+    <script src="js/script.js"></script>
+</body>
+
+</html>
