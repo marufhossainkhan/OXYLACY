@@ -159,12 +159,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (luxuryForm) {
         luxuryForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            
+
             const submitBtn = luxuryForm.querySelector('.send-msg-btn');
-            
+
             submitBtn.textContent = 'Transmitting to Atelier...';
             submitBtn.style.opacity = '0.7';
-            
+
             setTimeout(() => {
                 luxuryForm.innerHTML = `
                     <div style="text-align: center; padding: 40px 20px; background: rgba(197, 168, 128, 0.05); border: 1px solid #c5a880; border-radius: 4px;">
@@ -175,5 +175,41 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
             }, 1000);
         });
+    }
+
+    /* =======================================================
+       7. Fetch Products from MongoDB API
+    ======================================================= */
+    const productsGrid = document.querySelector('.products-grid');
+
+    if (productsGrid) {
+        fetch('http://localhost:5000/api/products')
+            .then(res => res.json())
+            .then(products => {
+                if (products && products.length > 0) {
+                    productsGrid.innerHTML = ''; // Clear static dummy cards
+
+                    products.forEach(item => {
+                        const card = document.createElement('div');
+                        card.className = 'product-card';
+                        card.setAttribute('data-category', item.category.toLowerCase());
+
+                        card.innerHTML = `
+                            <div class="product-img-box">
+                                <img src="${item.image}" alt="${item.name}" class="product-img">
+                                ${item.tag ? `<span class="product-badge">${item.tag}</span>` : ''}
+                            </div>
+                            <div class="product-info">
+                                <span class="product-category">${item.category}</span>
+                                <h3 class="product-name">${item.name}</h3>
+                                <p class="product-price">$${item.price.toFixed(2)} ${item.originalPrice ? `<span class="old-price" style="text-decoration: line-through; opacity: 0.6; margin-left: 6px;">$${item.originalPrice.toFixed(2)}</span>` : ''}</p>
+                                <a href="product-details.html?id=${item._id}" class="btn-product">View Details</a>
+                            </div>
+                        `;
+                        productsGrid.appendChild(card);
+                    });
+                }
+            })
+            .catch(err => console.error('Error loading products from backend:', err));
     }
 });
