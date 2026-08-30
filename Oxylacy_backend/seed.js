@@ -1,92 +1,146 @@
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-const Product = require('./models/Product');
+const { Sequelize, DataTypes } = require('sequelize');
 
-dotenv.config();
+// MySQL Connection via Sequelize
+const sequelize = new Sequelize('oxylacy_db', 'root', '', {
+  host: 'localhost',
+  dialect: 'mysql',
+  logging: false,
+});
 
-const dummyProducts = [
-    {
-        name: "Aethelgard Chronograph",
-        price: 450,
-        originalPrice: 520,
-        category: "timepieces",
-        tag: "Exclusive",
-        image: "image/products/watch-2.jpg",
-        description: "Precision engineered automatic timepiece encased in sapphire crystal with matte obsidian finish.",
-        rating: 4.9,
-        stock: 12,
-        featured: true
-    },
-    {
-        name: "Midnight Bespoke Tuxedo",
-        price: 620,
-        originalPrice: 700,
-        category: "apparel",
-        tag: "Bespoke",
-        image: "image/products/suite-1.jpg",
-        description: "Handcrafted Italian wool tuxedo tailored for timeless modern aesthetics and supreme comfort.",
-        rating: 5.0,
-        stock: 8,
-        featured: true
-    },
-    {
-        name: "Artisanal Heritage Belt",
-        price: 120,
-        originalPrice: 150,
-        category: "leather",
-        tag: "Handmade",
-        image: "image/products/belt-1.jpg",
-        description: "Full-grain Tuscan leather belt with brushed brass buckle designed for daily luxury.",
-        rating: 4.8,
-        stock: 15,
-        featured: true
-    },
-    {
-        name: "Celeste Diamond Edition",
-        price: 380,
-        originalPrice: 420,
-        category: "timepieces",
-        tag: "New",
-        image: "image/products/watch-female-2.jpg",
-        description: "Refined elegance with subtle diamond accents and mother-of-pearl dial.",
-        rating: 4.7,
-        stock: 20,
-        featured: false
-    },
-    {
-        name: "Heritage Tailored Suit",
-        price: 540,
-        originalPrice: 600,
-        category: "apparel",
-        tag: "Classic",
-        image: "image/products/suite-2.jpg",
-        description: "Timeless check pattern bespoke suit constructed from premium breathable fabric.",
-        rating: 4.9,
-        stock: 10,
-        featured: false
-    },
-    {
-        name: "Vintage Minimalist Wallet",
-        price: 85,
-        originalPrice: 100,
-        category: "leather",
-        tag: "Compact",
-        image: "image/products/wallet-1.jpg",
-        description: "Ultra-slim vintage cardholder crafted from premium vegetable-tanned leather.",
-        rating: 4.6,
-        stock: 25,
-        featured: false
-    }
+// Product Model
+const Product = sequelize.define('Product', {
+  name: { type: DataTypes.STRING, allowNull: false },
+  category: { type: DataTypes.STRING, allowNull: false },
+  price: { type: DataTypes.FLOAT, allowNull: false },
+  originalPrice: { type: DataTypes.FLOAT, allowNull: true },
+  tag: { type: DataTypes.STRING, allowNull: true },
+  image: { type: DataTypes.STRING, allowNull: false },
+  description: { type: DataTypes.TEXT, allowNull: true }
+}, { timestamps: true });
+
+const initialProducts = [
+  // --- TIMEPIECES ---
+  {
+    name: "Classic Chronograph Gold",
+    category: "Classic Leather",
+    price: 249.99,
+    originalPrice: 299.99,
+    tag: "Sale",
+    image: "image/products/p1.jpeg",
+    description: "A timeless masterpiece with a genuine leather strap, sapphire crystal glass, and water resistance up to 50m."
+  },
+  {
+    name: "Minimalist Silver Mesh",
+    category: "Modern Minimalist",
+    price: 189.99,
+    originalPrice: null,
+    tag: "New",
+    image: "image/products/p2.jpeg",
+    description: "Ultra-thin stainless steel case paired with an elegant silver mesh band, perfect for both formal and casual wear."
+  },
+  {
+    name: "Apex Smartwatch Pro",
+    category: "Smart Wear",
+    price: 329.99,
+    originalPrice: 399.99,
+    tag: "Hot",
+    image: "image/products/p3.jpeg",
+    description: "Advanced fitness tracking, AMOLED display, 7-day battery life, and seamless smartphone notifications."
+  },
+  {
+    name: "Rose Gold Elegance",
+    category: "Modern Minimalist",
+    price: 219.99,
+    originalPrice: 259.99,
+    tag: null,
+    image: "image/products/p4.jpeg",
+    description: "Crafted for sophistication with a rose gold-plated bezel, mother-of-pearl dial, and Japanese quartz movement."
+  },
+  {
+    name: "Aviator Dark Edition",
+    category: "Sport & Diver",
+    price: 279.99,
+    originalPrice: null,
+    tag: "New",
+    image: "image/products/p5.jpeg",
+    description: "Tactical matte black finish with luminous hands, rotating bezel, and reinforced mineral glass."
+  },
+  {
+    name: "Oceanic Diver 300M",
+    category: "Sport & Diver",
+    price: 349.99,
+    originalPrice: 420.00,
+    tag: "Sale",
+    image: "image/products/watch-1.jpg",
+    description: "Professional dive watch certified to 300 meters, featuring helium escape valve and ceramic bezel."
+  },
+  {
+    name: "Heritage Automatic",
+    category: "Classic Leather",
+    price: 499.99,
+    originalPrice: null,
+    tag: "Limited",
+    image: "image/products/watch-2.jpg",
+    description: "Self-winding mechanical movement visible through the exhibition case back, paired with Italian leather."
+  },
+
+  // --- APPAREL ---
+  {
+    name: "Midnight Bespoke Tuxedo",
+    category: "Apparel",
+    price: 620.00,
+    originalPrice: 750.00,
+    tag: "Exclusive",
+    image: "image/products/suite-1.jpg",
+    description: "Hand-tailored wool-silk blend tuxedo crafted for gala evenings and red-carpet sophistication."
+  },
+  {
+    name: "Heritage Tailored Suit",
+    category: "Apparel",
+    price: 540.00,
+    originalPrice: null,
+    tag: "New",
+    image: "image/products/suite-2.jpg",
+    description: "Bespoke double-breasted check suit tailored with premium breathable Italian virgin wool."
+  },
+
+  // --- LEATHER GOODS ---
+  {
+    name: "Artisanal Heritage Belt",
+    category: "Leather Goods",
+    price: 120.00,
+    originalPrice: 150.00,
+    tag: "Handmade",
+    image: "image/products/belt-1.jpg",
+    description: "Full-grain vegetable-tanned leather belt with a brushed brass monogram buckle."
+  },
+  {
+    name: "Vintage Minimalist Wallet",
+    category: "Leather Goods",
+    price: 85.00,
+    originalPrice: 110.00,
+    tag: "Sale",
+    image: "image/products/wallet-1.jpg",
+    description: "Handcrafted pure leather bifold wallet with RFID blocking and slim profile design."
+  }
 ];
 
-mongoose.connect(process.env.MONGO_URI)
-    .then(async () => {
-        await Product.deleteMany({});
-        await Product.insertMany(dummyProducts);
-        console.log('Dummy Products Seeded Successfully with Correct Images!');
-        process.exit();
-    })
-    .catch(err => {
-        console.error('Seeding Error:', err);
-        process.exit(1);
-    });
+async function seedDB() {
+  try {
+    await sequelize.authenticate();
+    console.log("Connected to MySQL Database via Sequelize!");
+
+    await sequelize.sync({ force: true });
+    console.log("Products table synchronized successfully.");
+
+    await Product.bulkCreate(initialProducts);
+    console.log("All 11 products (Watches, Suits, Belts, Wallets) seeded successfully!");
+
+    process.exit(0);
+  } catch (err) {
+    console.error("Seeding error:", err);
+    process.exit(1);
+  }
+}
+
+seedDB();
