@@ -5,6 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Atelier Command Center — OXYLACY Admin</title>
+
+    <!-- Immediate Route Protection -->
+    <script>
+        if (!localStorage.getItem('oxylacy_admin_token')) {
+            window.location.href = 'admin-login.html';
+        }
+    </script>
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,9 +31,12 @@
     <div class="top-bar">
         <div class="container top-bar-content">
             <p>Atelier Executive Portal — Restricted Access</p>
-            <div class="currency-selector">
+            <div class="currency-selector" style="display: flex; align-items: center; gap: 15px;">
                 <span>SYSTEM ACTIVE <i class="fa-solid fa-circle"
                         style="color: #22c55e; font-size: 0.6rem; vertical-align: middle;"></i></span>
+                <button id="adminLogoutBtn" style="background: none; border: none; color: #f87171; font-size: 0.75rem; cursor: pointer; text-transform: uppercase; font-weight: 600; letter-spacing: 1px;">
+                    <i class="fa-solid fa-power-off"></i> Logout
+                </button>
             </div>
         </div>
     </div>
@@ -41,7 +52,9 @@
                 <ul>
                     <li><a href="index.html" target="_blank">Live Storefront <i
                                 class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.75rem;"></i></a></li>
-                    <li><a href="admin.html" class="active">Orders & Dispatches</a></li>
+                    <li><a href="#ordersSection">Orders</a></li>
+                    <li><a href="#inventorySection">Inventory</a></li>
+                    <li><a href="#categorySection">Categories</a></li>
                     <li><a href="#newProductSection">Add Product</a></li>
                 </ul>
             </nav>
@@ -62,7 +75,7 @@
 
             <!-- Statistics Overview Cards -->
             <div
-                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 40px;">
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 40px;">
                 <div
                     style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); padding: 25px; border-radius: 4px; text-align: center;">
                     <div style="color: #a1a1aa; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">
@@ -87,17 +100,25 @@
                         style="font-family: 'Playfair Display', serif; font-size: 2.2rem; color: #f59e0b; margin-top: 8px;">
                         0</div>
                 </div>
+                <div
+                    style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); padding: 25px; border-radius: 4px; text-align: center;">
+                    <div style="color: #a1a1aa; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">
+                        Live Products</div>
+                    <div id="statTotalProducts"
+                        style="font-family: 'Playfair Display', serif; font-size: 2.2rem; color: #38bdf8; margin-top: 8px;">
+                        0</div>
+                </div>
             </div>
 
             <!-- Orders Management Section -->
-            <div
+            <div id="ordersSection"
                 style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); padding: 30px; border-radius: 4px; margin-bottom: 50px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
                     <h3 style="font-family: 'Playfair Display', serif; font-size: 1.6rem; color: #fff;">Live Order
                         Manifest</h3>
                     <button id="refreshOrdersBtn" class="btn btn-secondary"
                         style="padding: 8px 18px; font-size: 0.8rem;"><i class="fa-solid fa-rotate"></i>
-                        Refresh</button>
+                        Refresh Orders</button>
                 </div>
 
                 <div style="overflow-x: auto;">
@@ -121,6 +142,67 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+
+            <!-- Product Inventory Management Section -->
+            <div id="inventorySection"
+                style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); padding: 30px; border-radius: 4px; margin-bottom: 50px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                    <div>
+                        <h3 style="font-family: 'Playfair Display', serif; font-size: 1.6rem; color: #fff;">Live Inventory Management</h3>
+                        <p style="color: #a1a1aa; font-size: 0.85rem; margin-top: 4px;">Edit pricing, details or remove creations directly from catalog.</p>
+                    </div>
+                    <button id="refreshProductsBtn" class="btn btn-secondary"
+                        style="padding: 8px 18px; font-size: 0.8rem;"><i class="fa-solid fa-rotate"></i>
+                        Refresh Products</button>
+                </div>
+
+                <div style="overflow-x: auto;">
+                    <table
+                        style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem; color: #e4e4e7;">
+                        <thead>
+                            <tr
+                                style="border-bottom: 1px solid rgba(255,255,255,0.15); color: #d4af37; text-transform: uppercase; letter-spacing: 1px;">
+                                <th style="padding: 12px 15px;">Product</th>
+                                <th style="padding: 12px 15px;">Category</th>
+                                <th style="padding: 12px 15px;">Price</th>
+                                <th style="padding: 12px 15px;">Tag</th>
+                                <th style="padding: 12px 15px; text-align: right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTableBody">
+                            <tr>
+                                <td colspan="5" style="text-align: center; padding: 30px; color: #a1a1aa;">Loading inventory creations...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Category Management Section -->
+            <div id="categorySection"
+                style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); padding: 35px; border-radius: 4px; margin-bottom: 50px;">
+                <h3 style="font-family: 'Playfair Display', serif; font-size: 1.6rem; color: #fff; margin-bottom: 10px;">
+                    Department & Category Architecture</h3>
+                <p style="color: #a1a1aa; font-size: 0.85rem; margin-bottom: 25px;">Create and manage store categories. New categories will appear automatically in the shop and product forms.</p>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+                    <form id="addCategoryForm">
+                        <label style="display: block; font-size: 0.8rem; color: #a1a1aa; margin-bottom: 8px; text-transform: uppercase;">New Category Name *</label>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" id="catNameInput" required placeholder="e.g. Perfumes, Sunglasses, Shoes"
+                                style="flex: 1; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px;">
+                            <button type="submit" id="addCategoryBtn" class="btn btn-primary" style="padding: 12px 20px;">CREATE</button>
+                        </div>
+                    </form>
+
+                    <div>
+                        <label style="display: block; font-size: 0.8rem; color: #a1a1aa; margin-bottom: 8px; text-transform: uppercase;">Active Categories In Store</label>
+                        <div id="categoryListContainer" style="display: flex; flex-wrap: wrap; gap: 10px; max-height: 150px; overflow-y: auto; padding: 10px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.06); border-radius: 4px;">
+                            <span style="color: #71717a; font-size: 0.8rem;">Loading categories...</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -162,8 +244,7 @@
                 <h3
                     style="font-family: 'Playfair Display', serif; font-size: 1.6rem; color: #fff; margin-bottom: 10px;">
                     Register New Atelier Creation</h3>
-                <p style="color: #a1a1aa; font-size: 0.85rem; margin-bottom: 25px;">Upload a new masterpiece directly
-                    into your live catalog inventory.</p>
+                <p style="color: #a1a1aa; font-size: 0.85rem; margin-bottom: 25px;">Upload a new masterpiece directly into your live catalog inventory.</p>
 
                 <form id="addProductForm">
                     <div
@@ -177,14 +258,10 @@
                         </div>
                         <div>
                             <label
-                                style="display: block; font-size: 0.8rem; color: #a1a1aa; margin-bottom: 6px; text-transform: uppercase;">Category
-                                *</label>
+                                style="display: block; font-size: 0.8rem; color: #a1a1aa; margin-bottom: 6px; text-transform: uppercase;">Category *</label>
                             <select id="pCategory" required
                                 style="width: 100%; padding: 12px; background: #121212; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px;">
-                                <option value="timepieces">Timepieces (Watches)</option>
-                                <option value="apparel">Modern Apparel</option>
-                                <option value="leather">Leather Goods</option>
-                                <option value="accessories">Bespoke Accessories</option>
+                                <option value="">Loading categories...</option>
                             </select>
                         </div>
                     </div>
@@ -240,6 +317,56 @@
         </div>
     </section>
 
+    <!-- Product Edit Modal (POPUP) -->
+    <div id="editProductModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center; padding: 20px;">
+        <div style="background: #141416; border: 1px solid rgba(212,175,55,0.3); border-radius: 6px; width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; padding: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.9);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
+                <h3 style="font-family: 'Playfair Display', serif; color: #d4af37; font-size: 1.4rem;">Edit Creation Details</h3>
+                <button id="closeEditModalBtn" style="background: none; border: none; color: #a1a1aa; font-size: 1.2rem; cursor: pointer;"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <form id="editProductForm">
+                <input type="hidden" id="editPId">
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 5px; text-transform: uppercase;">Product Name</label>
+                    <input type="text" id="editPName" required style="width: 100%; padding: 10px; background: #0c0d0e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px;">
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                    <div>
+                        <label style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 5px; text-transform: uppercase;">Category</label>
+                        <select id="editPCategory" required style="width: 100%; padding: 10px; background: #0c0d0e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px;"></select>
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 5px; text-transform: uppercase;">Tag</label>
+                        <input type="text" id="editPTag" style="width: 100%; padding: 10px; background: #0c0d0e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px;">
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                    <div>
+                        <label style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 5px; text-transform: uppercase;">Price ($)</label>
+                        <input type="number" step="0.01" id="editPPrice" required style="width: 100%; padding: 10px; background: #0c0d0e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 5px; text-transform: uppercase;">Compare Price ($)</label>
+                        <input type="number" step="0.01" id="editPOriginalPrice" style="width: 100%; padding: 10px; background: #0c0d0e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px;">
+                    </div>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 5px; text-transform: uppercase;">Image Path / URL</label>
+                    <input type="text" id="editPImage" required style="width: 100%; padding: 10px; background: #0c0d0e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px;">
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 5px; text-transform: uppercase;">Description</label>
+                    <textarea id="editPDescription" rows="3" required style="width: 100%; padding: 10px; background: #0c0d0e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px;"></textarea>
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                    <button type="button" id="cancelEditModalBtn" class="btn btn-secondary" style="padding: 10px 20px;">Cancel</button>
+                    <button type="submit" class="btn btn-primary" style="padding: 10px 25px;">SAVE CHANGES</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="main-footer">
         <div class="footer-bottom">
@@ -249,8 +376,20 @@
         </div>
     </footer>
 
-    <!-- Custom Script -->
+    <!-- Custom Script & Logout Handler -->
     <script src="js/script.js"></script>
+    <script>
+        const logoutBtn = document.getElementById('adminLogoutBtn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', () => {
+                if (confirm('Are you sure you want to exit the Atelier Command Center?')) {
+                    localStorage.removeItem('oxylacy_admin_token');
+                    localStorage.removeItem('oxylacy_admin_user');
+                    window.location.href = 'admin-login.html';
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>

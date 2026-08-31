@@ -52,11 +52,34 @@
                 </ul>
             </nav>
 
-            <!-- Header Action Icons -->
-            <div class="header-actions">
-                <a href="#" class="icon-link"><i class="fa-solid fa-magnifying-glass"></i></a>
-                <a href="#" class="icon-link"><i class="fa-regular fa-heart"></i></a>
-                <a href="cart.html" class="icon-link cart-link">
+            <!-- Header Action Icons (Absolute In-Place Search) -->
+            <div class="header-actions" style="position: relative; display: flex; align-items: center; gap: 20px;">
+                <div style="position: relative; display: flex; align-items: center;">
+                    <!-- Magnifying Glass Icon -->
+                    <button type="button" id="headerSearchBtn" class="icon-link"
+                        style="background: none; border: none; cursor: pointer; color: #1e2b28; font-size: 1.1rem; padding: 5px; display: flex; align-items: center;"
+                        title="Search">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+
+                    <!-- Exact In-Place Search Box (Replaces Icon without moving menu) -->
+                    <div id="searchBarBox"
+                        style="display: none; position: absolute; right: 0; top: 50%; transform: translateY(-50%); background: #fff; border: 1px solid #d4af37; border-radius: 20px; padding: 4px 10px; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.15); z-index: 100;">
+                        <input type="text" id="headerSearchInput" placeholder="Search creations..."
+                            style="border: none; background: transparent; outline: none; font-size: 0.85rem; width: 150px; color: #18181b;">
+                        <i class="fa-solid fa-xmark" id="clearSearchBtn"
+                            style="cursor: pointer; color: #71717a; font-size: 0.85rem; margin-left: 6px;"></i>
+                    </div>
+
+                    <!-- Live Database Search Suggestion Popup -->
+                    <div id="searchSuggestions"
+                        style="display: none; position: absolute; top: 40px; right: 0; background: #18181b; border: 1px solid rgba(212,175,55,0.3); border-radius: 6px; width: 280px; max-height: 320px; overflow-y: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.6); z-index: 99999;">
+                    </div>
+                </div>
+
+                <a href="#" class="icon-link" style="color: #1e2b28; font-size: 1.1rem;"><i
+                        class="fa-regular fa-heart"></i></a>
+                <a href="cart.html" class="icon-link cart-link" style="color: #1e2b28; font-size: 1.1rem;">
                     <i class="fa-solid fa-bag-shopping"></i>
                     <span class="cart-count">0</span>
                 </a>
@@ -100,7 +123,7 @@
                     <div class="card-content">
                         <span class="card-tag">Craftsmanship</span>
                         <h3 class="card-title">Timepieces</h3>
-                        <a href="#" class="card-link">Explore Collection &rarr;</a>
+                        <a href="shop.html?category=timepieces" class="card-link">Explore Collection &rarr;</a>
                     </div>
                 </div>
 
@@ -113,7 +136,7 @@
                     <div class="card-content">
                         <span class="card-tag">Refined Tailoring</span>
                         <h3 class="card-title">Apparel</h3>
-                        <a href="#" class="card-link">Explore Collection &rarr;</a>
+                        <a href="shop.html?category=apparel" class="card-link">Explore Collection &rarr;</a>
                     </div>
                 </div>
 
@@ -126,7 +149,7 @@
                     <div class="card-content">
                         <span class="card-tag">Artisanal Essentials</span>
                         <h3 class="card-title">Leather Goods</h3>
-                        <a href="#" class="card-link">Explore Collection &rarr;</a>
+                        <a href="shop.html?category=leather" class="card-link">Explore Collection &rarr;</a>
                     </div>
                 </div>
             </div>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atelier Command Center — Executive Authentication</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body style="display: flex; align-items: center; justify-content: center; min-height: 100vh; background-color: #0c0d0e; margin: 0; padding: 20px; box-sizing: border-box;">
+
+    <div style="width: 100%; max-width: 440px; background: rgba(255,255,255,0.02); border: 1px solid rgba(212,175,55,0.25); border-radius: 6px; padding: 45px 35px; box-shadow: 0 20px 40px rgba(0,0,0,0.8); text-align: center;">
+        
+        <!-- Brand Logo -->
+        <a href="index.html" style="display: inline-flex; align-items: center; gap: 12px; text-decoration: none; margin-bottom: 25px;">
+            <img src="image/logo/logo.jpeg" alt="OXYLACY" style="width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(212,175,55,0.4);">
+            <span style="font-family: 'Playfair Display', serif; font-size: 1.35rem; letter-spacing: 3px; color: #fff; font-weight: 600;">OXYLACY</span>
+        </a>
+
+        <span style="display: block; font-size: 0.72rem; color: #d4af37; letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 8px;">Restricted Executive Portal</span>
+        <h2 style="font-family: 'Playfair Display', serif; font-size: 1.7rem; color: #fff; font-weight: 600; margin-bottom: 30px;">Access Command Center</h2>
+
+        <!-- Login Form -->
+        <form id="adminLoginForm" style="text-align: left;">
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;">Admin Email *</label>
+                <div style="position: relative;">
+                    <input type="email" id="adminEmail" required placeholder="admin@oxylacy.com"
+                        style="width: 100%; padding: 13px 15px 13px 40px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.12); color: #fff; border-radius: 4px; font-size: 0.85rem; box-sizing: border-box;">
+                    <i class="fa-solid fa-envelope" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #71717a; font-size: 0.85rem;"></i>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 30px;">
+                <label style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;">Security Key / Password *</label>
+                <div style="position: relative;">
+                    <input type="password" id="adminPassword" required placeholder="••••••••"
+                        style="width: 100%; padding: 13px 15px 13px 40px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.12); color: #fff; border-radius: 4px; font-size: 0.85rem; box-sizing: border-box;">
+                    <i class="fa-solid fa-lock" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #71717a; font-size: 0.85rem;"></i>
+                </div>
+            </div>
+
+            <button type="submit" id="adminLoginBtn" class="btn btn-primary"
+                style="width: 100%; padding: 14px; letter-spacing: 2px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">AUTHENTICATE & ENTER</button>
+        </form>
+
+        <div style="margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 20px;">
+            <a href="index.html" style="color: #a1a1aa; font-size: 0.8rem; text-decoration: none; transition: 0.3s;" onmouseover="this.style.color='#d4af37'" onmouseout="this.style.color='#a1a1aa'">
+                <i class="fa-solid fa-arrow-left" style="margin-right: 6px;"></i> Return to Live Storefront
+            </a>
+        </div>
+    </div>
+
+    <!-- Login Handler Script -->
+    <script>
+        document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('adminEmail').value;
+            const password = document.getElementById('adminPassword').value;
+            const submitBtn = document.getElementById('adminLoginBtn');
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Verifying Credentials...';
+
+            try {
+                const res = await fetch('http://localhost:5000/api/admin/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    localStorage.setItem('oxylacy_admin_token', data.token);
+                    localStorage.setItem('oxylacy_admin_user', JSON.stringify(data.admin));
+                    window.location.href = 'admin.html';
+                } else {
+                    alert('Authentication Failed: ' + (data.error || 'Invalid credentials'));
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'AUTHENTICATE & ENTER';
+                }
+            } catch (err) {
+                console.error('Login error:', err);
+                alert('Failed to connect to authentication server.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'AUTHENTICATE & ENTER';
+            }
+        });
+    </script>
+</body>
+
+</html>
