@@ -12,9 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-   /* =======================================================
-       2. Header Search Bar & Real-Time DB Auto-Suggestion (In-Place)
-    ======================================================= */
+    /* =======================================================
+        2. Header Search Bar & Real-Time DB Auto-Suggestion (In-Place)
+     ======================================================= */
     const headerSearchBtn = document.getElementById('headerSearchBtn');
     const searchBarBox = document.getElementById('searchBarBox');
     const headerSearchInput = document.getElementById('headerSearchInput');
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const matches = allDbProducts.filter(p => 
+        const matches = allDbProducts.filter(p =>
             p.name.toLowerCase().includes(q) || (p.category && p.category.toLowerCase().includes(q))
         );
 
@@ -1033,12 +1033,14 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <option value="Shipped" ${order.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
                                 <option value="Delivered" ${order.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
                             </select>
-                        </td>
-                        <td style="padding: 16px 15px; text-align: right;">
-                            <button class="delete-order-btn" data-id="${order.id}" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #f87171; padding: 6px 12px; border-radius: 3px; cursor: pointer; font-size: 0.75rem;">
-                                <i class="fa-solid fa-trash-can"></i>
-                            </button>
-                        </td>
+                        <td style="padding: 16px 15px; text-align: right; display: flex; gap: 8px; justify-content: flex-end;">
+    <button class="print-invoice-btn" data-order='${JSON.stringify(order).replace(/'/g, "&apos;")}' style="background: rgba(212, 175, 55, 0.15); border: 1px solid rgba(212, 175, 55, 0.4); color: #d4af37; padding: 6px 10px; border-radius: 3px; cursor: pointer; font-size: 0.75rem;" title="View / Print Invoice">
+        <i class="fa-solid fa-file-invoice"></i> Invoice
+    </button>
+    <button class="delete-order-btn" data-id="${order.id}" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #f87171; padding: 6px 12px; border-radius: 3px; cursor: pointer; font-size: 0.75rem;">
+        <i class="fa-solid fa-trash-can"></i>
+    </button>
+</td>
                     `;
                     ordersTableBody.appendChild(row);
                 });
@@ -1064,6 +1066,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     });
                 });
+
+                document.querySelectorAll('.print-invoice-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const orderData = JSON.parse(btn.getAttribute('data-order'));
+        openLuxuryInvoice(orderData);
+    });
+});
 
                 document.querySelectorAll('.delete-order-btn').forEach(btn => {
                     btn.addEventListener('click', async () => {
@@ -1198,5 +1207,128 @@ document.addEventListener('DOMContentLoaded', () => {
         if (refreshMessagesBtn) refreshMessagesBtn.addEventListener('click', loadAdminMessages);
         loadAdminMessages();
     }
+
+    /* =======================================================
+   13. Luxury Order Invoice Generator & Print
+======================================================= */
+function openLuxuryInvoice(order) {
+    let items = [];
+    if (Array.isArray(order.items)) {
+        items = order.items;
+    } else if (typeof order.items === 'string') {
+        try { items = JSON.parse(order.items); } catch(e) { items = []; }
+    }
+
+    const orderDate = new Date(order.createdAt).toLocaleDateString('en-US', {
+        month: 'short', day: 'numeric', year: 'numeric'
+    });
+
+    const itemsRows = items.map(item => `
+        <tr style="border-bottom: 1px solid #e5e7eb;">
+            <td style="padding: 12px 8px; font-size: 14px; color: #1f2937;">${item.name}</td>
+            <td style="padding: 12px 8px; text-align: center; font-size: 14px; color: #4b5563;">${item.quantity}</td>
+            <td style="padding: 12px 8px; text-align: right; font-size: 14px; color: #4b5563;">$${Number(item.price).toFixed(2)}</td>
+            <td style="padding: 12px 8px; text-align: right; font-size: 14px; font-weight: 600; color: #111827;">$${(item.price * item.quantity).toFixed(2)}</td>
+        </tr>
+    `).join('');
+
+    const invoiceWindow = window.open('', '_blank', 'width=850,height=900');
+    invoiceWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Invoice #${order.orderId || order.id} — OXYLACY</title>
+            <style>
+                body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #f9fafb; margin: 0; padding: 40px 20px; color: #111; }
+                .invoice-card { max-width: 750px; margin: 0 auto; background: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+                .header-flex { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #111; padding-bottom: 20px; }
+                .brand-title { font-size: 26px; font-weight: 800; letter-spacing: 2px; color: #111; margin: 0; }
+                .brand-sub { font-size: 11px; color: #6b7280; letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; }
+                .invoice-tag { text-align: right; }
+                .invoice-tag h2 { margin: 0; font-size: 22px; color: #3b4e49; }
+                .invoice-tag p { margin: 4px 0 0; font-size: 13px; color: #6b7280; }
+                .grid-details { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin: 30px 0; }
+                .info-box h4 { margin: 0 0 8px; font-size: 12px; color: #9ca3af; text-transform: uppercase; letter-spacing: 1px; }
+                .info-box p { margin: 0; font-size: 14px; line-height: 1.6; color: #374151; }
+                table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+                th { background: #f3f4f6; padding: 10px 8px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: #374151; }
+                .summary-table { width: 280px; margin-left: auto; margin-top: 20px; }
+                .summary-table td { padding: 6px 0; font-size: 14px; }
+                .print-bar { text-align: center; margin-bottom: 20px; }
+                .btn-print { background: #111; color: #fff; border: none; padding: 10px 24px; border-radius: 4px; font-weight: 600; cursor: pointer; }
+                @media print { .print-bar { display: none; } body { background: #fff; padding: 0; } .invoice-card { box-shadow: none; padding: 0; } }
+            </style>
+        </head>
+        <body>
+            <div class="print-bar">
+                <button class="btn-print" onclick="window.print()">🖨️ Print / Save as PDF</button>
+            </div>
+            <div class="invoice-card">
+                <div class="header-flex">
+                    <div>
+                        <h1 class="brand-title">OXYLACY</h1>
+                        <div class="brand-sub">Luxury Fashion & Lifestyle Atelier</div>
+                    </div>
+                    <div class="invoice-tag">
+                        <h2>INVOICE</h2>
+                        <p><strong>ID:</strong> #${order.orderId || order.id}</p>
+                        <p><strong>Date:</strong> ${orderDate}</p>
+                    </div>
+                </div>
+
+                <div class="grid-details">
+                    <div class="info-box">
+                        <h4>Billed & Delivered To:</h4>
+                        <p><strong>${order.customerName || 'Valued Client'}</strong><br>
+                        ${order.email ? order.email + '<br>' : ''}
+                        ${order.phone ? order.phone + '<br>' : ''}
+                        ${order.address || 'Address Not Provided'}</p>
+                    </div>
+                    <div class="info-box" style="text-align: right;">
+                        <h4>Payment & Logistics:</h4>
+                        <p><strong>Method:</strong> ${order.paymentMethod || 'Cash on Delivery'}<br>
+                        <strong>Status:</strong> ${order.status || 'Pending'}<br>
+                        <strong>Origin:</strong> Dhaka, Bangladesh</p>
+                    </div>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="text-align: left;">Item Description</th>
+                            <th style="text-align: center;">Qty</th>
+                            <th style="text-align: right;">Unit Price</th>
+                            <th style="text-align: right;">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${itemsRows}
+                    </tbody>
+                </table>
+
+                <table class="summary-table">
+                    <tr>
+                        <td style="color: #6b7280;">Subtotal:</td>
+                        <td style="text-align: right; font-weight: 500;">$${Number(order.totalAmount || 0).toFixed(2)}</td>
+                    </tr>
+                    <tr>
+                        <td style="color: #6b7280;">Shipping:</td>
+                        <td style="text-align: right; font-weight: 500; color: #10b981;">COMPLIMENTARY</td>
+                    </tr>
+                    <tr style="border-top: 2px solid #111;">
+                        <td style="font-weight: 700; font-size: 16px; padding-top: 10px;">Total Due:</td>
+                        <td style="text-align: right; font-weight: 700; font-size: 16px; color: #111; padding-top: 10px;">$${Number(order.totalAmount || 0).toFixed(2)}</td>
+                    </tr>
+                </table>
+
+                <div style="margin-top: 50px; text-align: center; border-top: 1px solid #e5e7eb; padding-top: 20px; font-size: 12px; color: #9ca3af;">
+                    Thank you for choosing OXYLACY. For concierge support: oxylacy@gmail.com
+                </div>
+            </div>
+        </body>
+        </html>
+    `);
+    invoiceWindow.document.close();
+}
 
 });
