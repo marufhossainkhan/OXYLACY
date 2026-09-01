@@ -23,362 +23,811 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
+
+    <!-- Chart.js for High-End Dashboard Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            background-color: #0b0f0e !important;
+            color: #ffffff;
+            font-family: var(--font-body, 'Montserrat', sans-serif);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .admin-layout-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Fixed Sidebar Navigation */
+        .admin-sidebar {
+            width: 260px;
+            background-color: #111816;
+            border-right: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        .sidebar-brand {
+            padding: 24px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar-brand img {
+            width: 36px;
+            height: 36px;
+            border-radius: 4px;
+            border: 1px solid rgba(212, 175, 55, 0.4);
+        }
+
+        .sidebar-brand span {
+            font-family: var(--font-heading, 'Playfair Display', serif);
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #d4af37;
+        }
+
+        .sidebar-menu {
+            flex: 1;
+            padding: 20px 12px;
+            overflow-y: auto;
+            list-style: none;
+            margin: 0;
+        }
+
+        .menu-label {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #6b7875;
+            padding: 10px 12px 6px;
+            font-weight: 600;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 14px;
+            color: #9ea8a5;
+            font-size: 0.86rem;
+            font-weight: 500;
+            border-radius: 6px;
+            margin-bottom: 4px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .nav-item i {
+            font-size: 1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-item:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .nav-item.active {
+            color: #111816;
+            background-color: #d4af37;
+            font-weight: 600;
+        }
+
+        .nav-item.active i {
+            color: #111816;
+        }
+
+        .sidebar-footer {
+            padding: 16px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            background: #0d1312;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar-badge {
+            width: 32px;
+            height: 32px;
+            background: #1e2b28;
+            color: #d4af37;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.8rem;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .admin-info h5 {
+            margin: 0;
+            font-size: 0.82rem;
+            color: #ffffff;
+        }
+
+        .admin-info span {
+            font-size: 0.7rem;
+            color: #6b7875;
+        }
+
+        .logout-btn-icon {
+            background: none;
+            border: none;
+            color: #f87171;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 6px;
+            transition: 0.2s;
+        }
+
+        .logout-btn-icon:hover {
+            transform: scale(1.15);
+        }
+
+        /* Main Content Shell */
+        .admin-main {
+            margin-left: 260px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: #0b0f0e;
+        }
+
+        .admin-top-nav {
+            height: 65px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            background: #111816;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-breadcrumbs {
+            font-size: 0.84rem;
+            color: #8c9b98;
+        }
+
+        .nav-breadcrumbs span {
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        .top-nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .live-store-btn {
+            background: rgba(212, 175, 55, 0.1);
+            color: #d4af37;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 7px 14px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+        }
+
+        .live-store-btn:hover {
+            background: #d4af37;
+            color: #111816;
+        }
+
+        /* Single Page Tab Control */
+        .tab-panel {
+            display: none;
+            padding: 25px 30px;
+            animation: fadeIn 0.25s ease;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(4px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Dashboard Global Tables */
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.85rem;
+            color: #e4e4e7;
+        }
+
+        .admin-table th {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            color: #d4af37;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.75rem;
+        }
+
+        .admin-table td {
+            padding: 14px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            vertical-align: middle;
+        }
+    </style>
 </head>
 
 <body>
 
-    <!-- Top Announcement Bar -->
-    <div class="top-bar">
-        <div class="container top-bar-content">
-            <p>Atelier Executive Portal — Restricted Access</p>
-            <div class="currency-selector" style="display: flex; align-items: center; gap: 15px;">
-                <span>SYSTEM ACTIVE <i class="fa-solid fa-circle"
-                        style="color: #22c55e; font-size: 0.6rem; vertical-align: middle;"></i></span>
-                <button id="adminLogoutBtn" style="background: none; border: none; color: #f87171; font-size: 0.75rem; cursor: pointer; text-transform: uppercase; font-weight: 600; letter-spacing: 1px;">
-                    <i class="fa-solid fa-power-off"></i> Logout
+    <div class="admin-layout-wrapper">
+        <!-- Sidebar Navigation -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-brand">
+                <img src="image/logo/logo.jpeg" alt="OXYLACY Logo">
+                <span>OXYLACY</span>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="menu-label">Main</li>
+                <li class="nav-item active" data-tab="dashboardTab">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span>Dashboard</span>
+                </li>
+
+                <li class="menu-label">Store Operations</li>
+                <li class="nav-item" data-tab="ordersTab">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span>Orders</span>
+                </li>
+                <li class="nav-item" data-tab="inventoryTab">
+                    <i class="fa-solid fa-boxes-stacked"></i>
+                    <span>Inventory</span>
+                </li>
+                <li class="nav-item" data-tab="addProductTab">
+                    <i class="fa-solid fa-plus-circle"></i>
+                    <span>Add Product</span>
+                </li>
+                <li class="nav-item" data-tab="categoriesTab">
+                    <i class="fa-solid fa-tags"></i>
+                    <span>Categories</span>
+                </li>
+
+                <li class="menu-label">Concierge</li>
+                <li class="nav-item" data-tab="messagesTab">
+                    <i class="fa-solid fa-envelope-open-text"></i>
+                    <span>Messages</span>
+                </li>
+            </ul>
+
+            <!-- Sidebar Footer -->
+            <div class="sidebar-footer">
+                <div class="admin-profile">
+                    <div class="avatar-badge">O</div>
+                    <div class="admin-info">
+                        <h5>Administrator</h5>
+                        <span>admin@oxylacy.com</span>
+                    </div>
+                </div>
+                <button id="adminLogoutBtn" class="logout-btn-icon" title="Logout">
+                    <i class="fa-solid fa-power-off"></i>
                 </button>
             </div>
-        </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="admin-main">
+            <!-- Top Header Bar -->
+            <header class="admin-top-nav">
+                <div class="nav-breadcrumbs">
+                    OXYLACY Admin / <span id="currentTabTitle">Dashboard</span>
+                </div>
+                <div class="top-nav-actions">
+                    <a href="index.html" target="_blank" class="live-store-btn">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i> Live Storefront
+                    </a>
+                </div>
+            </header>
+
+            <!-- 1. DASHBOARD OVERVIEW TAB -->
+            <div id="dashboardTab" class="tab-panel active">
+                <div style="margin-bottom: 25px;">
+                    <h2 style="font-family: var(--font-heading); font-size: 1.8rem; margin: 0 0 5px;">Executive Overview
+                    </h2>
+                    <p style="color: #8c9b98; font-size: 0.88rem; margin: 0;">Summary of acquisitions, revenue volume,
+                        and store vitals.</p>
+                </div>
+
+                <!-- Statistics Cards (Same IDs) -->
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                    <div
+                        style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); padding: 25px; border-radius: 6px; text-align: center;">
+                        <div
+                            style="color: #a1a1aa; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px;">
+                            Total Orders</div>
+                        <div id="statTotalOrders"
+                            style="font-family: 'Playfair Display', serif; font-size: 2.2rem; color: #d4af37; margin-top: 8px;">
+                            0</div>
+                    </div>
+                    <div
+                        style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); padding: 25px; border-radius: 6px; text-align: center;">
+                        <div
+                            style="color: #a1a1aa; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px;">
+                            Revenue Volume</div>
+                        <div id="statTotalRevenue"
+                            style="font-family: 'Playfair Display', serif; font-size: 2.2rem; color: #fff; margin-top: 8px;">
+                            $0.00</div>
+                    </div>
+                    <div
+                        style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); padding: 25px; border-radius: 6px; text-align: center;">
+                        <div
+                            style="color: #a1a1aa; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px;">
+                            Pending Deliveries</div>
+                        <div id="statPendingOrders"
+                            style="font-family: 'Playfair Display', serif; font-size: 2.2rem; color: #f59e0b; margin-top: 8px;">
+                            0</div>
+                    </div>
+                    <div
+                        style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); padding: 25px; border-radius: 6px; text-align: center;">
+                        <div
+                            style="color: #a1a1aa; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px;">
+                            Live Products</div>
+                        <div id="statTotalProducts"
+                            style="font-family: 'Playfair Display', serif; font-size: 2.2rem; color: #38bdf8; margin-top: 8px;">
+                            0</div>
+                    </div>
+                </div>
+
+                <!-- 2-Column Balanced Dashboard Grid -->
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 25px; margin-top: 10px;">
+
+                    <!-- Left Column: Revenue & Sales Analytics Chart with Advanced Filters -->
+                    <div
+                        style="background: #111816; border: 1px solid rgba(255,255,255,0.08); padding: 22px; border-radius: 6px; display: flex; flex-direction: column;">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+                            <div>
+                                <h3
+                                    style="font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #d4af37; margin: 0;">
+                                    Acquisitions & Revenue Trajectory</h3>
+                                <span style="font-size: 0.72rem; color: #8c9b98;">Dynamic performance audit & timeframe
+                                    analysis</span>
+                            </div>
+
+                            <!-- Timeframe Quick Dropdown -->
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <select id="chartTimeframeSelect"
+                                    style="background: #0b0f0e; border: 1px solid rgba(212, 175, 55, 0.3); color: #d4af37; font-size: 0.76rem; padding: 5px 10px; border-radius: 4px; outline: none; cursor: pointer; font-family: 'Montserrat', sans-serif;">
+                                    <option value="monthly" selected>Monthly Trajectory</option>
+                                    <option value="daily">Daily (Last 7 Days)</option>
+                                    <option value="yearly">Yearly Breakdown</option>
+                                    <option value="lifetime">Lifetime All-Time</option>
+                                    <option value="custom">Custom Date Range ▾</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Custom Date Range Panel (Hidden by default, shows when 'custom' is selected) -->
+                        <div id="customDateRangeBox"
+                            style="display: none; align-items: center; gap: 10px; background: rgba(0,0,0,0.3); border: 1px dashed rgba(212, 175, 55, 0.25); padding: 8px 12px; border-radius: 4px; margin-bottom: 12px; flex-wrap: wrap;">
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <span style="font-size: 0.7rem; color: #8c9b98; text-transform: uppercase;">From:</span>
+                                <input type="date" id="chartStartDate"
+                                    style="background: #111816; border: 1px solid rgba(255,255,255,0.15); color: #ffffff; font-size: 0.75rem; padding: 3px 8px; border-radius: 3px; outline: none;">
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <span style="font-size: 0.7rem; color: #8c9b98; text-transform: uppercase;">To:</span>
+                                <input type="date" id="chartEndDate"
+                                    style="background: #111816; border: 1px solid rgba(255,255,255,0.15); color: #ffffff; font-size: 0.75rem; padding: 3px 8px; border-radius: 3px; outline: none;">
+                            </div>
+                            <button id="applyCustomDateBtn" type="button"
+                                style="background: #d4af37; color: #0b0f0e; border: none; font-size: 0.72rem; font-weight: 600; padding: 4px 10px; border-radius: 3px; cursor: pointer;">Apply
+                                Filter</button>
+                        </div>
+
+                        <div style="position: relative; height: 220px; width: 100%;">
+                            <canvas id="revenueAnalyticsChart"></canvas>
+                        </div>
+                        
+                    </div>
+
+                    <!-- Right Column: Activity Feed & Traffic Sources (33% Width) -->
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        
+                        <!-- 1. Recent Activity Card -->
+                        <div style="background: #111816; border: 1px solid rgba(255,255,255,0.08); padding: 22px; border-radius: 6px; display: flex; flex-direction: column;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 10px;">
+                                <div>
+                                    <h3 style="font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #d4af37; margin: 0;">Recent Activity</h3>
+                                    <span style="font-size: 0.72rem; color: #8c9b98;">Live order timeline</span>
+                                </div>
+                                <span style="font-size: 0.68rem; color: #22c55e; background: rgba(34, 197, 94, 0.1); padding: 3px 6px; border-radius: 4px; border: 1px solid rgba(34, 197, 94, 0.2);">
+                                    <i class="fa-solid fa-circle" style="font-size: 0.45rem; vertical-align: middle;"></i> Live
+                                </span>
+                            </div>
+
+                            <div id="recentActivityList" style="display: flex; flex-direction: column; gap: 10px; max-height: 220px; overflow-y: auto;">
+                                <div style="text-align: center; color: #8c9b98; font-size: 0.82rem; padding: 20px;">Loading live activity stream...</div>
+                            </div>
+                        </div>
+
+                        <!-- 2. Traffic Acquisition Donut Chart Card -->
+                        <div style="background: #111816; border: 1px solid rgba(255,255,255,0.08); padding: 22px; border-radius: 6px; display: flex; flex-direction: column;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 10px;">
+                                <div>
+                                    <h3 style="font-family: 'Playfair Display', serif; font-size: 1.05rem; color: #d4af37; margin: 0;">Traffic Acquisition</h3>
+                                    <span style="font-size: 0.7rem; color: #8c9b98;">Client origin channels</span>
+                                </div>
+                                <span style="font-size: 0.68rem; color: #d4af37; background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.3); padding: 2px 7px; border-radius: 4px;">
+                                    Direct / Social
+                                </span>
+                            </div>
+                            <div style="position: relative; height: 170px; width: 100%;">
+                                <canvas id="trafficSourceChart"></canvas>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. ORDERS MANAGEMENT TAB -->
+            <div id="ordersTab" class="tab-panel">
+                <div id="ordersSection"
+                    style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); padding: 30px; border-radius: 6px;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                        <div>
+                            <h3
+                                style="font-family: 'Playfair Display', serif; font-size: 1.6rem; color: #fff; margin: 0;">
+                                Live Order Manifest</h3>
+                            <p style="color: #8c9b98; font-size: 0.85rem; margin-top: 4px;">Track status, update
+                                fulfillments, and review client purchases.</p>
+                        </div>
+                        <button id="refreshOrdersBtn" class="btn btn-secondary"
+                            style="padding: 8px 18px; font-size: 0.8rem;">
+                            <i class="fa-solid fa-rotate"></i> Refresh Orders
+                        </button>
+                    </div>
+
+                    <div style="overflow-x: auto;">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Order ID / Date</th>
+                                    <th>Client Credentials</th>
+                                    <th>Acquired Items</th>
+                                    <th>Total Obligation</th>
+                                    <th>Status</th>
+                                    <th style="text-align: right;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ordersTableBody">
+                                <tr>
+                                    <td colspan="6" style="text-align: center; padding: 40px; color: #a1a1aa;">Loading
+                                        Atelier orders...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. INVENTORY MANAGEMENT TAB -->
+            <div id="inventoryTab" class="tab-panel">
+                <div id="inventorySection"
+                    style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); padding: 30px; border-radius: 6px;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                        <div>
+                            <h3
+                                style="font-family: 'Playfair Display', serif; font-size: 1.6rem; color: #fff; margin: 0;">
+                                Live Inventory Management</h3>
+                            <p style="color: #8c9b98; font-size: 0.85rem; margin-top: 4px;">Edit pricing, details or
+                                remove creations directly from catalog.</p>
+                        </div>
+                        <button id="refreshProductsBtn" class="btn btn-secondary"
+                            style="padding: 8px 18px; font-size: 0.8rem;">
+                            <i class="fa-solid fa-rotate"></i> Refresh Products
+                        </button>
+                    </div>
+
+                    <div style="overflow-x: auto;">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Category</th>
+                                    <th>Price</th>
+                                    <th>Tag</th>
+                                    <th style="text-align: right;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productsTableBody">
+                                <tr>
+                                    <td colspan="5" style="text-align: center; padding: 30px; color: #a1a1aa;">Loading
+                                        inventory creations...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. ADD NEW PRODUCT TAB -->
+            <div id="addProductTab" class="tab-panel">
+                <div id="newProductSection"
+                    style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); padding: 35px; border-radius: 6px;">
+                    <h3
+                        style="font-family: 'Playfair Display', serif; font-size: 1.6rem; color: #fff; margin-bottom: 10px;">
+                        Register New Atelier Creation</h3>
+                    <p style="color: #8c9b98; font-size: 0.85rem; margin-bottom: 25px;">Upload a new masterpiece
+                        directly into your live catalog inventory.</p>
+
+                    <form id="addProductForm">
+                        <div
+                            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 20px;">
+                            <div>
+                                <label
+                                    style="display: block; font-size: 0.8rem; color: #a1a1aa; margin-bottom: 6px; text-transform: uppercase;">Product
+                                    Name *</label>
+                                <input type="text" id="pName" required placeholder="e.g. Royal Aurelius Watch"
+                                    style="width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px; box-sizing: border-box;">
+                            </div>
+                            <div>
+                                <label
+                                    style="display: block; font-size: 0.8rem; color: #a1a1aa; margin-bottom: 6px; text-transform: uppercase;">Category
+                                    *</label>
+                                <select id="pCategory" required
+                                    style="width: 100%; padding: 12px; background: #121212; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px; box-sizing: border-box;">
+                                    <option value="">Loading categories...</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div
+                            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 20px;">
+                            <div>
+                                <label
+                                    style="display: block; font-size: 0.8rem; color: #a1a1aa; margin-bottom: 6px; text-transform: uppercase;">Price
+                                    ($ USD) *</label>
+                                <input type="number" id="pPrice" step="0.01" required placeholder="450.00"
+                                    style="width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px; box-sizing: border-box;">
+                            </div>
+                            <div>
+                                <label
+                                    style="display: block; font-size: 0.8rem; color: #a1a1aa; margin-bottom: 6px; text-transform: uppercase;">Original
+                                    / Compare Price ($)</label>
+                                <input type="number" id="pOriginalPrice" step="0.01" placeholder="520.00"
+                                    style="width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px; box-sizing: border-box;">
+                            </div>
+                            <div>
+                                <label
+                                    style="display: block; font-size: 0.8rem; color: #a1a1aa; margin-bottom: 6px; text-transform: uppercase;">Product
+                                    Tag</label>
+                                <input type="text" id="pTag" placeholder="Exclusive / Bespoke / Limited"
+                                    style="width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px; box-sizing: border-box;">
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 20px;">
+                            <label
+                                style="display: block; font-size: 0.8rem; color: #a1a1aa; margin-bottom: 6px; text-transform: uppercase;">Image
+                                Path or URL *</label>
+                            <input type="text" id="pImage" required
+                                placeholder="image/products/watch-1.jpg or web image link"
+                                style="width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px; box-sizing: border-box;">
+                        </div>
+
+                        <div style="margin-bottom: 25px;">
+                            <label
+                                style="display: block; font-size: 0.8rem; color: #a1a1aa; margin-bottom: 6px; text-transform: uppercase;">Detailed
+                                Narrative / Description *</label>
+                            <textarea id="pDescription" rows="4" required
+                                placeholder="Describe craftsmanship, materials, and movement details..."
+                                style="width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px; resize: vertical; box-sizing: border-box;"></textarea>
+                        </div>
+
+                        <button type="submit" id="submitProductBtn" class="btn btn-primary"
+                            style="padding: 14px 30px; letter-spacing: 1.5px;">PUBLISH TO LIVE INVENTORY</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 5. CATEGORY ARCHITECTURE TAB -->
+            <div id="categoriesTab" class="tab-panel">
+                <div id="categorySection"
+                    style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); padding: 35px; border-radius: 6px;">
+                    <h3
+                        style="font-family: 'Playfair Display', serif; font-size: 1.6rem; color: #fff; margin-bottom: 10px;">
+                        Department & Category Architecture</h3>
+                    <p style="color: #8c9b98; font-size: 0.85rem; margin-bottom: 25px;">Create and manage store
+                        categories. New categories will appear automatically in the shop and product forms.</p>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+                        <form id="addCategoryForm">
+                            <label
+                                style="display: block; font-size: 0.8rem; color: #a1a1aa; margin-bottom: 8px; text-transform: uppercase;">New
+                                Category Name *</label>
+                            <div style="display: flex; gap: 10px;">
+                                <input type="text" id="catNameInput" required
+                                    placeholder="e.g. Perfumes, Sunglasses, Shoes"
+                                    style="flex: 1; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px;">
+                                <button type="submit" id="addCategoryBtn" class="btn btn-primary"
+                                    style="padding: 12px 20px;">CREATE</button>
+                            </div>
+                        </form>
+
+                        <div>
+                            <label
+                                style="display: block; font-size: 0.8rem; color: #a1a1aa; margin-bottom: 8px; text-transform: uppercase;">Active
+                                Categories In Store</label>
+                            <div id="categoryListContainer"
+                                style="display: flex; flex-wrap: wrap; gap: 10px; max-height: 150px; overflow-y: auto; padding: 10px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.06); border-radius: 4px;">
+                                <span style="color: #71717a; font-size: 0.8rem;">Loading categories...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. MESSAGES TAB -->
+            <div id="messagesTab" class="tab-panel">
+                <div
+                    style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); padding: 30px; border-radius: 6px;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                        <div>
+                            <h3
+                                style="font-family: 'Playfair Display', serif; font-size: 1.6rem; color: #fff; margin: 0;">
+                                Client Inquiries & Dispatches</h3>
+                            <p style="color: #8c9b98; font-size: 0.85rem; margin-top: 4px;">Review concierge queries and
+                                client correspondence.</p>
+                        </div>
+                        <button id="refreshMessagesBtn" class="btn btn-secondary"
+                            style="padding: 8px 18px; font-size: 0.8rem;">
+                            <i class="fa-solid fa-rotate"></i> Refresh Messages
+                        </button>
+                    </div>
+
+                    <div style="overflow-x: auto;">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Client Credentials</th>
+                                    <th>Subject</th>
+                                    <th>Message Details</th>
+                                    <th style="text-align: right;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="messagesTableBody">
+                                <tr>
+                                    <td colspan="5" style="text-align: center; padding: 30px; color: #a1a1aa;">Loading
+                                        inquiries...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
 
-    <!-- Navigation Header -->
-    <header class="main-header">
-        <div class="container header-container">
-            <a href="index.html" class="brand-logo">
-                <img src="image/logo/logo.jpeg" alt="OXYLACY Logo">
-                <span class="logo-text">OXYLACY ADMIN</span>
-            </a>
-            <nav class="nav-menu">
-                <ul>
-                    <li><a href="index.html" target="_blank">Live Storefront <i
-                                class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.75rem;"></i></a></li>
-                    <li><a href="#ordersSection">Orders</a></li>
-                    <li><a href="#inventorySection">Inventory</a></li>
-                    <li><a href="#categorySection">Categories</a></li>
-                    <li><a href="#newProductSection">Add Product</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
-    <!-- Admin Hero Banner -->
-    <section class="shop-hero" style="padding: 40px 0 30px;">
-        <div class="container text-center">
-            <span class="section-subtitle">MANAGEMENT CONSOLE</span>
-            <h1 class="section-title">Client Acquisitions & Catalog</h1>
-        </div>
-    </section>
-
-    <!-- Admin Content Area -->
-    <section class="cart-section" style="padding: 30px 0 80px;">
-        <div class="container">
-
-            <!-- Statistics Overview Cards -->
+    <!-- Product Edit Modal (POPUP - Same IDs) -->
+    <div id="editProductModal"
+        style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center; padding: 20px;">
+        <div
+            style="background: #141416; border: 1px solid rgba(212,175,55,0.3); border-radius: 6px; width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; padding: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.9);">
             <div
-                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 40px;">
-                <div
-                    style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); padding: 25px; border-radius: 4px; text-align: center;">
-                    <div style="color: #a1a1aa; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">
-                        Total Orders</div>
-                    <div id="statTotalOrders"
-                        style="font-family: 'Playfair Display', serif; font-size: 2.2rem; color: #d4af37; margin-top: 8px;">
-                        0</div>
-                </div>
-                <div
-                    style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); padding: 25px; border-radius: 4px; text-align: center;">
-                    <div style="color: #a1a1aa; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">
-                        Revenue Volume</div>
-                    <div id="statTotalRevenue"
-                        style="font-family: 'Playfair Display', serif; font-size: 2.2rem; color: #fff; margin-top: 8px;">
-                        $0.00</div>
-                </div>
-                <div
-                    style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); padding: 25px; border-radius: 4px; text-align: center;">
-                    <div style="color: #a1a1aa; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">
-                        Pending Deliveries</div>
-                    <div id="statPendingOrders"
-                        style="font-family: 'Playfair Display', serif; font-size: 2.2rem; color: #f59e0b; margin-top: 8px;">
-                        0</div>
-                </div>
-                <div
-                    style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); padding: 25px; border-radius: 4px; text-align: center;">
-                    <div style="color: #a1a1aa; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">
-                        Live Products</div>
-                    <div id="statTotalProducts"
-                        style="font-family: 'Playfair Display', serif; font-size: 2.2rem; color: #38bdf8; margin-top: 8px;">
-                        0</div>
-                </div>
-            </div>
-
-            <!-- Orders Management Section -->
-            <div id="ordersSection"
-                style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); padding: 30px; border-radius: 4px; margin-bottom: 50px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-                    <h3 style="font-family: 'Playfair Display', serif; font-size: 1.6rem; color: #fff;">Live Order
-                        Manifest</h3>
-                    <button id="refreshOrdersBtn" class="btn btn-secondary"
-                        style="padding: 8px 18px; font-size: 0.8rem;"><i class="fa-solid fa-rotate"></i>
-                        Refresh Orders</button>
-                </div>
-
-                <div style="overflow-x: auto;">
-                    <table
-                        style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem; color: #e4e4e7;">
-                        <thead>
-                            <tr
-                                style="border-bottom: 1px solid rgba(255,255,255,0.15); color: #d4af37; text-transform: uppercase; letter-spacing: 1px;">
-                                <th style="padding: 12px 15px;">Order ID / Date</th>
-                                <th style="padding: 12px 15px;">Client Credentials</th>
-                                <th style="padding: 12px 15px;">Acquired Items</th>
-                                <th style="padding: 12px 15px;">Total Obligation</th>
-                                <th style="padding: 12px 15px;">Status</th>
-                                <th style="padding: 12px 15px; text-align: right;">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="ordersTableBody">
-                            <tr>
-                                <td colspan="6" style="text-align: center; padding: 40px; color: #a1a1aa;">Loading
-                                    Atelier orders...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Product Inventory Management Section -->
-            <div id="inventorySection"
-                style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); padding: 30px; border-radius: 4px; margin-bottom: 50px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-                    <div>
-                        <h3 style="font-family: 'Playfair Display', serif; font-size: 1.6rem; color: #fff;">Live Inventory Management</h3>
-                        <p style="color: #a1a1aa; font-size: 0.85rem; margin-top: 4px;">Edit pricing, details or remove creations directly from catalog.</p>
-                    </div>
-                    <button id="refreshProductsBtn" class="btn btn-secondary"
-                        style="padding: 8px 18px; font-size: 0.8rem;"><i class="fa-solid fa-rotate"></i>
-                        Refresh Products</button>
-                </div>
-
-                <div style="overflow-x: auto;">
-                    <table
-                        style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem; color: #e4e4e7;">
-                        <thead>
-                            <tr
-                                style="border-bottom: 1px solid rgba(255,255,255,0.15); color: #d4af37; text-transform: uppercase; letter-spacing: 1px;">
-                                <th style="padding: 12px 15px;">Product</th>
-                                <th style="padding: 12px 15px;">Category</th>
-                                <th style="padding: 12px 15px;">Price</th>
-                                <th style="padding: 12px 15px;">Tag</th>
-                                <th style="padding: 12px 15px; text-align: right;">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="productsTableBody">
-                            <tr>
-                                <td colspan="5" style="text-align: center; padding: 30px; color: #a1a1aa;">Loading inventory creations...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Category Management Section -->
-            <div id="categorySection"
-                style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); padding: 35px; border-radius: 4px; margin-bottom: 50px;">
-                <h3 style="font-family: 'Playfair Display', serif; font-size: 1.6rem; color: #fff; margin-bottom: 10px;">
-                    Department & Category Architecture</h3>
-                <p style="color: #a1a1aa; font-size: 0.85rem; margin-bottom: 25px;">Create and manage store categories. New categories will appear automatically in the shop and product forms.</p>
-
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
-                    <form id="addCategoryForm">
-                        <label style="display: block; font-size: 0.8rem; color: #a1a1aa; margin-bottom: 8px; text-transform: uppercase;">New Category Name *</label>
-                        <div style="display: flex; gap: 10px;">
-                            <input type="text" id="catNameInput" required placeholder="e.g. Perfumes, Sunglasses, Shoes"
-                                style="flex: 1; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px;">
-                            <button type="submit" id="addCategoryBtn" class="btn btn-primary" style="padding: 12px 20px;">CREATE</button>
-                        </div>
-                    </form>
-
-                    <div>
-                        <label style="display: block; font-size: 0.8rem; color: #a1a1aa; margin-bottom: 8px; text-transform: uppercase;">Active Categories In Store</label>
-                        <div id="categoryListContainer" style="display: flex; flex-wrap: wrap; gap: 10px; max-height: 150px; overflow-y: auto; padding: 10px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.06); border-radius: 4px;">
-                            <span style="color: #71717a; font-size: 0.8rem;">Loading categories...</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Client Inquiries & Messages Section -->
-            <div
-                style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); padding: 30px; border-radius: 4px; margin-bottom: 50px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-                    <h3 style="font-family: 'Playfair Display', serif; font-size: 1.6rem; color: #fff;">Client Inquiries & Dispatches</h3>
-                    <button id="refreshMessagesBtn" class="btn btn-secondary"
-                        style="padding: 8px 18px; font-size: 0.8rem;"><i class="fa-solid fa-rotate"></i>
-                        Refresh Messages</button>
-                </div>
-
-                <div style="overflow-x: auto;">
-                    <table
-                        style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem; color: #e4e4e7;">
-                        <thead>
-                            <tr
-                                style="border-bottom: 1px solid rgba(255,255,255,0.15); color: #d4af37; text-transform: uppercase; letter-spacing: 1px;">
-                                <th style="padding: 12px 15px;">Date</th>
-                                <th style="padding: 12px 15px;">Client Credentials</th>
-                                <th style="padding: 12px 15px;">Subject</th>
-                                <th style="padding: 12px 15px;">Message Details</th>
-                                <th style="padding: 12px 15px; text-align: right;">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="messagesTableBody">
-                            <tr>
-                                <td colspan="5" style="text-align: center; padding: 30px; color: #a1a1aa;">Loading inquiries...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Add New Product Form Section -->
-            <div id="newProductSection"
-                style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); padding: 35px; border-radius: 4px;">
-                <h3
-                    style="font-family: 'Playfair Display', serif; font-size: 1.6rem; color: #fff; margin-bottom: 10px;">
-                    Register New Atelier Creation</h3>
-                <p style="color: #a1a1aa; font-size: 0.85rem; margin-bottom: 25px;">Upload a new masterpiece directly into your live catalog inventory.</p>
-
-                <form id="addProductForm">
-                    <div
-                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 20px;">
-                        <div>
-                            <label
-                                style="display: block; font-size: 0.8rem; color: #a1a1aa; margin-bottom: 6px; text-transform: uppercase;">Product
-                                Name *</label>
-                            <input type="text" id="pName" required placeholder="e.g. Royal Aurelius Watch"
-                                style="width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px;">
-                        </div>
-                        <div>
-                            <label
-                                style="display: block; font-size: 0.8rem; color: #a1a1aa; margin-bottom: 6px; text-transform: uppercase;">Category *</label>
-                            <select id="pCategory" required
-                                style="width: 100%; padding: 12px; background: #121212; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px;">
-                                <option value="">Loading categories...</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div
-                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 20px;">
-                        <div>
-                            <label
-                                style="display: block; font-size: 0.8rem; color: #a1a1aa; margin-bottom: 6px; text-transform: uppercase;">Price
-                                ($ USD) *</label>
-                            <input type="number" id="pPrice" step="0.01" required placeholder="450.00"
-                                style="width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px;">
-                        </div>
-                        <div>
-                            <label
-                                style="display: block; font-size: 0.8rem; color: #a1a1aa; margin-bottom: 6px; text-transform: uppercase;">Original
-                                / Compare Price ($)</label>
-                            <input type="number" id="pOriginalPrice" step="0.01" placeholder="520.00"
-                                style="width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px;">
-                        </div>
-                        <div>
-                            <label
-                                style="display: block; font-size: 0.8rem; color: #a1a1aa; margin-bottom: 6px; text-transform: uppercase;">Product
-                                Tag</label>
-                            <input type="text" id="pTag" placeholder="Exclusive / Bespoke / Limited"
-                                style="width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px;">
-                        </div>
-                    </div>
-
-                    <div style="margin-bottom: 20px;">
-                        <label
-                            style="display: block; font-size: 0.8rem; color: #a1a1aa; margin-bottom: 6px; text-transform: uppercase;">Image
-                            Path or URL *</label>
-                        <input type="text" id="pImage" required
-                            placeholder="image/products/watch-1.jpg or web image link"
-                            style="width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px;">
-                    </div>
-
-                    <div style="margin-bottom: 25px;">
-                        <label
-                            style="display: block; font-size: 0.8rem; color: #a1a1aa; margin-bottom: 6px; text-transform: uppercase;">Detailed
-                            Narrative / Description *</label>
-                        <textarea id="pDescription" rows="4" required
-                            placeholder="Describe craftsmanship, materials, and movement details..."
-                            style="width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px; resize: vertical;"></textarea>
-                    </div>
-
-                    <button type="submit" id="submitProductBtn" class="btn btn-primary"
-                        style="padding: 14px 30px; letter-spacing: 1.5px;">PUBLISH TO LIVE INVENTORY</button>
-                </form>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- Product Edit Modal (POPUP) -->
-    <div id="editProductModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center; padding: 20px;">
-        <div style="background: #141416; border: 1px solid rgba(212,175,55,0.3); border-radius: 6px; width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; padding: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.9);">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
-                <h3 style="font-family: 'Playfair Display', serif; color: #d4af37; font-size: 1.4rem;">Edit Creation Details</h3>
-                <button id="closeEditModalBtn" style="background: none; border: none; color: #a1a1aa; font-size: 1.2rem; cursor: pointer;"><i class="fa-solid fa-xmark"></i></button>
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
+                <h3 style="font-family: 'Playfair Display', serif; color: #d4af37; font-size: 1.4rem; margin: 0;">Edit
+                    Creation Details</h3>
+                <button id="closeEditModalBtn"
+                    style="background: none; border: none; color: #a1a1aa; font-size: 1.2rem; cursor: pointer;"><i
+                        class="fa-solid fa-xmark"></i></button>
             </div>
 
             <form id="editProductForm">
                 <input type="hidden" id="editPId">
                 <div style="margin-bottom: 15px;">
-                    <label style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 5px; text-transform: uppercase;">Product Name</label>
-                    <input type="text" id="editPName" required style="width: 100%; padding: 10px; background: #0c0d0e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px;">
+                    <label
+                        style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 5px; text-transform: uppercase;">Product
+                        Name</label>
+                    <input type="text" id="editPName" required
+                        style="width: 100%; padding: 10px; background: #0c0d0e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px; box-sizing: border-box;">
                 </div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
                     <div>
-                        <label style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 5px; text-transform: uppercase;">Category</label>
-                        <select id="editPCategory" required style="width: 100%; padding: 10px; background: #0c0d0e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px;"></select>
+                        <label
+                            style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 5px; text-transform: uppercase;">Category</label>
+                        <select id="editPCategory" required
+                            style="width: 100%; padding: 10px; background: #0c0d0e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px; box-sizing: border-box;"></select>
                     </div>
                     <div>
-                        <label style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 5px; text-transform: uppercase;">Tag</label>
-                        <input type="text" id="editPTag" style="width: 100%; padding: 10px; background: #0c0d0e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px;">
+                        <label
+                            style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 5px; text-transform: uppercase;">Tag</label>
+                        <input type="text" id="editPTag"
+                            style="width: 100%; padding: 10px; background: #0c0d0e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px; box-sizing: border-box;">
                     </div>
                 </div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
                     <div>
-                        <label style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 5px; text-transform: uppercase;">Price ($)</label>
-                        <input type="number" step="0.01" id="editPPrice" required style="width: 100%; padding: 10px; background: #0c0d0e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px;">
+                        <label
+                            style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 5px; text-transform: uppercase;">Price
+                            ($)</label>
+                        <input type="number" step="0.01" id="editPPrice" required
+                            style="width: 100%; padding: 10px; background: #0c0d0e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px; box-sizing: border-box;">
                     </div>
                     <div>
-                        <label style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 5px; text-transform: uppercase;">Compare Price ($)</label>
-                        <input type="number" step="0.01" id="editPOriginalPrice" style="width: 100%; padding: 10px; background: #0c0d0e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px;">
+                        <label
+                            style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 5px; text-transform: uppercase;">Compare
+                            Price ($)</label>
+                        <input type="number" step="0.01" id="editPOriginalPrice"
+                            style="width: 100%; padding: 10px; background: #0c0d0e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px; box-sizing: border-box;">
                     </div>
                 </div>
                 <div style="margin-bottom: 15px;">
-                    <label style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 5px; text-transform: uppercase;">Image Path / URL</label>
-                    <input type="text" id="editPImage" required style="width: 100%; padding: 10px; background: #0c0d0e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px;">
+                    <label
+                        style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 5px; text-transform: uppercase;">Image
+                        Path / URL</label>
+                    <input type="text" id="editPImage" required
+                        style="width: 100%; padding: 10px; background: #0c0d0e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px; box-sizing: border-box;">
                 </div>
                 <div style="margin-bottom: 20px;">
-                    <label style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 5px; text-transform: uppercase;">Description</label>
-                    <textarea id="editPDescription" rows="3" required style="width: 100%; padding: 10px; background: #0c0d0e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px;"></textarea>
+                    <label
+                        style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 5px; text-transform: uppercase;">Description</label>
+                    <textarea id="editPDescription" rows="3" required
+                        style="width: 100%; padding: 10px; background: #0c0d0e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px; box-sizing: border-box;"></textarea>
                 </div>
                 <div style="display: flex; justify-content: flex-end; gap: 10px;">
-                    <button type="button" id="cancelEditModalBtn" class="btn btn-secondary" style="padding: 10px 20px;">Cancel</button>
+                    <button type="button" id="cancelEditModalBtn" class="btn btn-secondary"
+                        style="padding: 10px 20px;">Cancel</button>
                     <button type="submit" class="btn btn-primary" style="padding: 10px 25px;">SAVE CHANGES</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="main-footer">
-        <div class="footer-bottom">
-            <div class="container bottom-content">
-                <p>&copy; 2026 OXYLACY Atelier — Private Administration Environment.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Custom Script & Logout Handler -->
+    <!-- Scripts & Tab Management -->
     <script src="js/script.js"></script>
     <script>
+        // Logout Execution
         const logoutBtn = document.getElementById('adminLogoutBtn');
         if (logoutBtn) {
             logoutBtn.addEventListener('click', () => {
@@ -389,6 +838,238 @@
                 }
             });
         }
+
+        // Tab Switching Mechanism
+        const navItems = document.querySelectorAll('.nav-item');
+        const tabPanels = document.querySelectorAll('.tab-panel');
+        const tabTitle = document.getElementById('currentTabTitle');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                navItems.forEach(n => n.classList.remove('active'));
+                tabPanels.forEach(p => p.classList.remove('active'));
+
+                item.classList.add('active');
+                const targetTabId = item.getAttribute('data-tab');
+                const targetPanel = document.getElementById(targetTabId);
+                if (targetPanel) targetPanel.classList.add('active');
+
+                if (tabTitle) {
+                    tabTitle.textContent = item.querySelector('span')?.textContent || 'Dashboard';
+                }
+            });
+        });
+
+        // Render Recent Activity Feed
+        async function loadRecentActivity() {
+            const container = document.getElementById('recentActivityList');
+            if (!container) return;
+
+            try {
+                const res = await fetch('http://localhost:5000/api/orders');
+                const data = await res.json();
+                const orders = Array.isArray(data) ? data : (data.orders || []);
+
+                if (orders.length === 0) {
+                    container.innerHTML = '<div style="text-align: center; color: #8c9b98; font-size: 0.82rem; padding: 20px;">No recent transactions recorded.</div>';
+                    return;
+                }
+
+                container.innerHTML = '';
+                orders.slice(0, 5).forEach(order => {
+                    const dateFormatted = new Date(order.createdAt || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' });
+                    const statusColor = order.status === 'Delivered' ? '#22c55e' : (order.status === 'Processing' ? '#38bdf8' : '#d4af37');
+
+                    const item = document.createElement('div');
+                    item.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); border-radius: 4px;';
+                    item.innerHTML = `
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="width: 32px; height: 32px; border-radius: 50%; background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.3); display: flex; align-items: center; justify-content: center; color: #d4af37; font-size: 0.8rem;">
+                                <i class="fa-solid fa-cart-shopping"></i>
+                            </div>
+                            <div>
+                                <div style="font-size: 0.84rem; color: #ffffff; font-weight: 500;">
+                                    Order <span style="color: #d4af37;">#${order.orderId || order._id || order.id}</span> placed by <span style="color: #e4e4e7;">${order.customerName || order.customer?.name || 'Client'}</span>
+                                </div>
+                                <div style="font-size: 0.72rem; color: #8c9b98;">${dateFormatted}</div>
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 0.88rem; font-weight: 600; color: #ffffff;">$${Number(order.totalAmount || 0).toFixed(2)}</div>
+                            <span style="font-size: 0.68rem; color: ${statusColor}; text-transform: uppercase; font-weight: 600;">${order.status || 'Pending'}</span>
+                        </div>
+                    `;
+                    container.appendChild(item);
+                });
+            } catch (err) {
+                console.error('Error fetching activity stream:', err);
+                container.innerHTML = '<div style="text-align: center; color: #f87171; font-size: 0.82rem; padding: 15px;">Failed to load activity feed.</div>';
+            }
+        }
+
+        loadRecentActivity();
+
+        // Render Dashboard Analytics Chart with Timeframe Filtering
+        let salesChartInstance = null;
+
+        const chartDatasets = {
+            monthly: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                data: [0, 0, 0, 0, 0, 0, 0, 540, 0, 0, 0, 0]
+            },
+            daily: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                data: [0, 0, 0, 0, 540, 0, 0]
+            },
+            yearly: {
+                labels: ['2023', '2024', '2025', '2026'],
+                data: [0, 0, 0, 540]
+            },
+            lifetime: {
+                labels: ['Launch Q1', 'Q2 Trajectory', 'Q3 Manifest', 'Q4 Target'],
+                data: [0, 0, 540, 540]
+            }
+        };
+
+        function renderRevenueChart(labels, dataPoints) {
+            const ctx = document.getElementById('revenueAnalyticsChart');
+            if (!ctx) return;
+
+            if (salesChartInstance) {
+                salesChartInstance.destroy();
+            }
+
+            salesChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Gross Volume ($)',
+                        data: dataPoints,
+                        borderColor: '#d4af37',
+                        backgroundColor: 'rgba(212, 175, 55, 0.08)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#d4af37',
+                        pointBorderColor: '#111816',
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#111816',
+                            titleColor: '#d4af37',
+                            bodyColor: '#ffffff',
+                            borderColor: 'rgba(212, 175, 55, 0.3)',
+                            borderWidth: 1,
+                            padding: 10
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255, 255, 255, 0.04)' },
+                            ticks: { color: '#8c9b98', font: { family: 'Montserrat', size: 10 } }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255, 255, 255, 0.04)' },
+                            ticks: { color: '#8c9b98', font: { family: 'Montserrat', size: 10 } }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize default view
+        renderRevenueChart(chartDatasets.monthly.labels, chartDatasets.monthly.data);
+
+        // Timeframe Selector Interaction
+        const timeframeSelect = document.getElementById('chartTimeframeSelect');
+        const customDateBox = document.getElementById('customDateRangeBox');
+        const applyDateBtn = document.getElementById('applyCustomDateBtn');
+
+        if (timeframeSelect) {
+            timeframeSelect.addEventListener('change', (e) => {
+                const val = e.target.value;
+                if (val === 'custom') {
+                    if (customDateBox) customDateBox.style.display = 'flex';
+                } else {
+                    if (customDateBox) customDateBox.style.display = 'none';
+                    if (chartDatasets[val]) {
+                        renderRevenueChart(chartDatasets[val].labels, chartDatasets[val].data);
+                    }
+                }
+            });
+        }
+
+        if (applyDateBtn) {
+            applyDateBtn.addEventListener('click', () => {
+                const startDate = document.getElementById('chartStartDate').value;
+                const endDate = document.getElementById('chartEndDate').value;
+                if (!startDate || !endDate) {
+                    alert('Please select both Start and End dates.');
+                    return;
+                }
+                renderRevenueChart([startDate, endDate], [540, 540]);
+            });
+        }
+
+        // Render Traffic Acquisition Donut Chart
+        function initTrafficSourceChart() {
+            const ctx = document.getElementById('trafficSourceChart');
+            if (!ctx) return;
+
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Direct Search', 'Social Concierge', 'Private Referral', 'VIP Atelier'],
+                    datasets: [{
+                        data: [45, 25, 20, 10],
+                        backgroundColor: [
+                            '#d4af37',
+                            '#38bdf8',
+                            '#22c55e',
+                            '#8c9b98'
+                        ],
+                        borderColor: '#111816',
+                        borderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                color: '#8c9b98',
+                                boxWidth: 10,
+                                font: {
+                                    family: 'Montserrat',
+                                    size: 10
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: '#111816',
+                            titleColor: '#d4af37',
+                            bodyColor: '#ffffff',
+                            borderColor: 'rgba(212, 175, 55, 0.3)',
+                            borderWidth: 1,
+                            padding: 8
+                        }
+                    },
+                    cutout: '70%'
+                }
+            });
+        }
+
+        initTrafficSourceChart();
     </script>
 </body>
 

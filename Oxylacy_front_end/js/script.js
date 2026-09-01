@@ -1068,11 +1068,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 document.querySelectorAll('.print-invoice-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const orderData = JSON.parse(btn.getAttribute('data-order'));
-        openLuxuryInvoice(orderData);
-    });
-});
+                    btn.addEventListener('click', () => {
+                        const orderData = JSON.parse(btn.getAttribute('data-order'));
+                        openLuxuryInvoice(orderData);
+                    });
+                });
 
                 document.querySelectorAll('.delete-order-btn').forEach(btn => {
                     btn.addEventListener('click', async () => {
@@ -1211,19 +1211,19 @@ document.addEventListener('DOMContentLoaded', () => {
     /* =======================================================
    13. Luxury Order Invoice Generator & Print
 ======================================================= */
-function openLuxuryInvoice(order) {
-    let items = [];
-    if (Array.isArray(order.items)) {
-        items = order.items;
-    } else if (typeof order.items === 'string') {
-        try { items = JSON.parse(order.items); } catch(e) { items = []; }
-    }
+    function openLuxuryInvoice(order) {
+        let items = [];
+        if (Array.isArray(order.items)) {
+            items = order.items;
+        } else if (typeof order.items === 'string') {
+            try { items = JSON.parse(order.items); } catch (e) { items = []; }
+        }
 
-    const orderDate = new Date(order.createdAt).toLocaleDateString('en-US', {
-        month: 'short', day: 'numeric', year: 'numeric'
-    });
+        const orderDate = new Date(order.createdAt).toLocaleDateString('en-US', {
+            month: 'short', day: 'numeric', year: 'numeric'
+        });
 
-    const itemsRows = items.map(item => `
+        const itemsRows = items.map(item => `
         <tr style="border-bottom: 1px solid #e5e7eb;">
             <td style="padding: 12px 8px; font-size: 14px; color: #1f2937;">${item.name}</td>
             <td style="padding: 12px 8px; text-align: center; font-size: 14px; color: #4b5563;">${item.quantity}</td>
@@ -1232,8 +1232,8 @@ function openLuxuryInvoice(order) {
         </tr>
     `).join('');
 
-    const invoiceWindow = window.open('', '_blank', 'width=850,height=900');
-    invoiceWindow.document.write(`
+        const invoiceWindow = window.open('', '_blank', 'width=850,height=900');
+        invoiceWindow.document.write(`
         <!DOCTYPE html>
         <html>
         <head>
@@ -1328,7 +1328,7 @@ function openLuxuryInvoice(order) {
         </body>
         </html>
     `);
-    invoiceWindow.document.close();
-}
+        invoiceWindow.document.close();
+    }
 
 });
