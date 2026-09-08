@@ -1,0 +1,395 @@
+body {
+    background-color: #0b0f0e !important;
+    color: #ffffff;
+    font-family: var(--font-body, 'Montserrat', sans-serif);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.admin-layout-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Fixed Sidebar Navigation */
+.admin-sidebar {
+    width: 260px;
+    background-color: #111816;
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.sidebar-brand {
+    padding: 24px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sidebar-brand img {
+    width: 36px;
+    height: 36px;
+    border-radius: 4px;
+    border: 1px solid rgba(212, 175, 55, 0.4);
+}
+
+.sidebar-brand span {
+    font-family: var(--font-heading, 'Playfair Display', serif);
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #d4af37;
+}
+
+.sidebar-menu {
+    flex: 1;
+    padding: 20px 12px;
+    overflow-y: auto;
+    list-style: none;
+    margin: 0;
+}
+
+.menu-label {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #6b7875;
+    padding: 10px 12px 6px;
+    font-weight: 600;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 14px;
+    color: #9ea8a5;
+    font-size: 0.86rem;
+    font-weight: 500;
+    border-radius: 6px;
+    margin-bottom: 4px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.nav-item i {
+    font-size: 1rem;
+    width: 20px;
+    text-align: center;
+}
+
+.nav-item:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.nav-item.active {
+    color: #111816;
+    background-color: #d4af37;
+    font-weight: 600;
+}
+
+.nav-item.active i {
+    color: #111816;
+}
+
+.sidebar-footer {
+    padding: 16px 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    background: #0d1312;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.admin-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar-badge {
+    width: 32px;
+    height: 32px;
+    background: #1e2b28;
+    color: #d4af37;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.8rem;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.admin-info h5 {
+    margin: 0;
+    font-size: 0.82rem;
+    color: #ffffff;
+}
+
+.admin-info span {
+    font-size: 0.7rem;
+    color: #6b7875;
+}
+
+.logout-btn-icon {
+    background: none;
+    border: none;
+    color: #f87171;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 6px;
+    transition: 0.2s;
+}
+
+.logout-btn-icon:hover {
+    transform: scale(1.15);
+}
+
+/* Main Content Shell */
+.admin-main {
+    margin-left: 260px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: #0b0f0e;
+}
+
+.admin-top-nav {
+    height: 65px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+    background: #111816;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-breadcrumbs {
+    font-size: 0.84rem;
+    color: #8c9b98;
+}
+
+.nav-breadcrumbs span {
+    color: #ffffff;
+    font-weight: 500;
+}
+
+.top-nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.live-store-btn {
+    background: rgba(212, 175, 55, 0.1);
+    color: #d4af37;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    padding: 7px 14px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+}
+
+.live-store-btn:hover {
+    background: #d4af37;
+    color: #111816;
+}
+
+/* Single Page Tab Control */
+.tab-panel {
+    display: none;
+    padding: 25px 30px;
+    animation: fadeIn 0.25s ease;
+}
+
+.tab-panel.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Dashboard Global Tables */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.85rem;
+    color: #e4e4e7;
+}
+
+.admin-table th {
+    padding: 12px 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    color: #d4af37;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.75rem;
+}
+
+/* .admin-table td {
+    padding: 14px 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    vertical-align: middle;
+
+    @media (max-width: 992px) {
+        div[style*="grid-template-columns: 2fr 1fr"] {
+            grid-template-columns: 1fr !important;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .admin-sidebar {
+            position: relative;
+            width: 100%;
+            height: auto;
+        }
+
+        .admin-main {
+            margin-left: 0;
+        }
+
+        .admin-top-nav {
+            padding: 0 15px;
+        }
+
+        .tab-panel {
+            padding: 20px 15px;
+        }
+    }
+} */
+
+.admin-table td {
+    padding: 14px 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    vertical-align: middle;
+}
+
+/* --- RESPONSIVE & MOBILE ENGINE --- */
+
+/* টগল বাটন (ডেস্কটপে লুকানো থাকবে) */
+.sidebar-toggle-btn {
+    display: none;
+    background: transparent;
+    border: none;
+    color: #d4af37;
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 6px;
+}
+
+/* মোবাইল ব্যাকড্রপ ডার্ক ওভারলে */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(2px);
+    z-index: 998;
+}
+
+.sidebar-overlay.active {
+    display: block;
+}
+
+/* ট্যাবলেট রেসপনসিভনেস (৯৯২ পিক্সেল) */
+@media (max-width: 992px) {
+    div[style*="grid-template-columns: 2fr 1fr"] {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* মোবাইল রেসপনসিভনেস (৭৬৮ পিক্সেল) */
+@media (max-width: 768px) {
+    /* টগল বাটন শো করবে */
+    .sidebar-toggle-btn {
+        display: inline-block;
+    }
+
+    /* সাইডবার লুকানো অবস্থায় বামে থাকবে */
+    .admin-sidebar {
+        position: fixed;
+        left: -280px;
+        top: 0;
+        bottom: 0;
+        width: 260px;
+        z-index: 999;
+        transition: left 0.3s ease-in-out;
+        box-shadow: 10px 0 25px rgba(0, 0, 0, 0.8);
+    }
+
+    /* সাইডবার ওপেন ক্লাস */
+    .admin-sidebar.open {
+        left: 0;
+    }
+
+    /* মূল স্ক্রিনের মার্জিন রিমুভ */
+    .admin-main {
+        margin-left: 0 !important;
+        width: 100%;
+    }
+
+    .admin-top-nav {
+        padding: 0 15px;
+    }
+
+    .tab-panel {
+        padding: 18px 12px;
+    }
+
+    /* ফর্ম এবং মোডালের পাশাপাশি থাকা গ্রিডগুলো ১ কলামে নামিয়ে আনা */
+    #addProductForm div[style*="grid-template-columns"],
+    #editProductForm div[style*="grid-template-columns: 1fr 1fr"],
+    div[style*="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr))"] {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* মোডাল উইন্ডোর প্যাডিং মোবাইলের জন্য পারফেক্ট সাইজ */
+    #editProductModal > div,
+    #allBestSellersModal > div {
+        padding: 18px !important;
+        width: 95% !important;
+    }
+
+    /* কাস্টম ডেট রেঞ্জ ফিল্টার বক্স এক লাইনে সাজানো */
+    #customDateRangeBox {
+        flex-direction: column;
+        align-items: stretch !important;
+    }
+
+    #customDateRangeBox > div {
+        justify-content: space-between;
+    }
+
+    #applyCustomDateBtn {
+        width: 100%;
+        padding: 8px !important;
+    }
+}

@@ -19,277 +19,15 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap"
         rel="stylesheet">
+
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/style.css">
 
     <!-- Chart.js for High-End Dashboard Analytics -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <style>
-        body {
-            background-color: #0b0f0e !important;
-            color: #ffffff;
-            font-family: var(--font-body, 'Montserrat', sans-serif);
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-        }
-
-        .admin-layout-wrapper {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* Fixed Sidebar Navigation */
-        .admin-sidebar {
-            width: 260px;
-            background-color: #111816;
-            border-right: 1px solid rgba(255, 255, 255, 0.06);
-            display: flex;
-            flex-direction: column;
-            position: fixed;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            z-index: 1000;
-        }
-
-        .sidebar-brand {
-            padding: 24px 20px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .sidebar-brand img {
-            width: 36px;
-            height: 36px;
-            border-radius: 4px;
-            border: 1px solid rgba(212, 175, 55, 0.4);
-        }
-
-        .sidebar-brand span {
-            font-family: var(--font-heading, 'Playfair Display', serif);
-            font-size: 1.15rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            color: #d4af37;
-        }
-
-        .sidebar-menu {
-            flex: 1;
-            padding: 20px 12px;
-            overflow-y: auto;
-            list-style: none;
-            margin: 0;
-        }
-
-        .menu-label {
-            font-size: 0.68rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: #6b7875;
-            padding: 10px 12px 6px;
-            font-weight: 600;
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 11px 14px;
-            color: #9ea8a5;
-            font-size: 0.86rem;
-            font-weight: 500;
-            border-radius: 6px;
-            margin-bottom: 4px;
-            cursor: pointer;
-            transition: all 0.25s ease;
-        }
-
-        .nav-item i {
-            font-size: 1rem;
-            width: 20px;
-            text-align: center;
-        }
-
-        .nav-item:hover {
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.03);
-        }
-
-        .nav-item.active {
-            color: #111816;
-            background-color: #d4af37;
-            font-weight: 600;
-        }
-
-        .nav-item.active i {
-            color: #111816;
-        }
-
-        .sidebar-footer {
-            padding: 16px 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            background: #0d1312;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .admin-profile {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .avatar-badge {
-            width: 32px;
-            height: 32px;
-            background: #1e2b28;
-            color: #d4af37;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 0.8rem;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-        }
-
-        .admin-info h5 {
-            margin: 0;
-            font-size: 0.82rem;
-            color: #ffffff;
-        }
-
-        .admin-info span {
-            font-size: 0.7rem;
-            color: #6b7875;
-        }
-
-        .logout-btn-icon {
-            background: none;
-            border: none;
-            color: #f87171;
-            cursor: pointer;
-            font-size: 1rem;
-            padding: 6px;
-            transition: 0.2s;
-        }
-
-        .logout-btn-icon:hover {
-            transform: scale(1.15);
-        }
-
-        /* Main Content Shell */
-        .admin-main {
-            margin-left: 260px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            background: #0b0f0e;
-        }
-
-        .admin-top-nav {
-            height: 65px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 30px;
-            background: #111816;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .nav-breadcrumbs {
-            font-size: 0.84rem;
-            color: #8c9b98;
-        }
-
-        .nav-breadcrumbs span {
-            color: #ffffff;
-            font-weight: 500;
-        }
-
-        .top-nav-actions {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .live-store-btn {
-            background: rgba(212, 175, 55, 0.1);
-            color: #d4af37;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            padding: 7px 14px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            text-decoration: none;
-        }
-
-        .live-store-btn:hover {
-            background: #d4af37;
-            color: #111816;
-        }
-
-        /* Single Page Tab Control */
-        .tab-panel {
-            display: none;
-            padding: 25px 30px;
-            animation: fadeIn 0.25s ease;
-        }
-
-        .tab-panel.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(4px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Dashboard Global Tables */
-        .admin-table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-            font-size: 0.85rem;
-            color: #e4e4e7;
-        }
-
-        .admin-table th {
-            padding: 12px 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-            color: #d4af37;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.75rem;
-        }
-
-        .admin-table td {
-            padding: 14px 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            vertical-align: middle;
-        }
-    </style>
+    <!-- Admin Stylesheet -->
+    <link rel="stylesheet" href="css/admin.css">
 </head>
 
 <body>
@@ -353,8 +91,14 @@
         <main class="admin-main">
             <!-- Top Header Bar -->
             <header class="admin-top-nav">
-                <div class="nav-breadcrumbs">
-                    OXYLACY Admin / <span id="currentTabTitle">Dashboard</span>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <!-- Mobile Sidebar Toggle Button -->
+                    <button id="sidebarToggleBtn" class="sidebar-toggle-btn" title="Toggle Menu">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div class="nav-breadcrumbs">
+                        OXYLACY Admin / <span id="currentTabTitle">Dashboard</span>
+                    </div>
                 </div>
                 <div class="top-nav-actions">
                     <a href="index.html" target="_blank" class="live-store-btn">
@@ -372,7 +116,7 @@
                         and store vitals.</p>
                 </div>
 
-                <!-- Statistics Cards (Same IDs) -->
+                <!-- Statistics Cards -->
                 <div
                     style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
                     <div
@@ -413,87 +157,129 @@
                     </div>
                 </div>
 
-                <!-- 2-Column Balanced Dashboard Grid -->
-                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 25px; margin-top: 10px;">
+                <!-- 2-Column Balanced Dashboard Grid (2fr 1fr) -->
+                <div
+                    style="display: grid; grid-template-columns: 2fr 1fr; gap: 25px; margin-top: 10px; align-items: start;">
 
-                    <!-- Left Column: Revenue & Sales Analytics Chart with Advanced Filters -->
-                    <div
-                        style="background: #111816; border: 1px solid rgba(255,255,255,0.08); padding: 22px; border-radius: 6px; display: flex; flex-direction: column;">
+                    <!-- Left Column Wrapper: (Trajectory Chart + Top Products Progress Bar) -->
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+
+                        <!-- 1. Revenue Trajectory Card -->
                         <div
-                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 12px; flex-wrap: wrap; gap: 10px;">
-                            <div>
-                                <h3
-                                    style="font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #d4af37; margin: 0;">
-                                    Acquisitions & Revenue Trajectory</h3>
-                                <span style="font-size: 0.72rem; color: #8c9b98;">Dynamic performance audit & timeframe
-                                    analysis</span>
+                            style="background: #111816; border: 1px solid rgba(255,255,255,0.08); padding: 22px; border-radius: 6px; display: flex; flex-direction: column;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+                                <div>
+                                    <h3
+                                        style="font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #d4af37; margin: 0;">
+                                        Acquisitions & Revenue Trajectory</h3>
+                                    <span style="font-size: 0.72rem; color: #8c9b98;">Dynamic performance audit &
+                                        timeframe analysis</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <select id="chartTimeframeSelect"
+                                        style="background: #0b0f0e; border: 1px solid rgba(212, 175, 55, 0.3); color: #d4af37; font-size: 0.76rem; padding: 5px 10px; border-radius: 4px; outline: none; cursor: pointer; font-family: 'Montserrat', sans-serif;">
+                                        <option value="monthly" selected>Monthly Trajectory</option>
+                                        <option value="daily">Daily (Last 7 Days)</option>
+                                        <option value="yearly">Yearly Breakdown</option>
+                                        <option value="custom">Custom Date Range ▾</option>
+                                    </select>
+                                </div>
                             </div>
 
-                            <!-- Timeframe Quick Dropdown -->
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <select id="chartTimeframeSelect"
-                                    style="background: #0b0f0e; border: 1px solid rgba(212, 175, 55, 0.3); color: #d4af37; font-size: 0.76rem; padding: 5px 10px; border-radius: 4px; outline: none; cursor: pointer; font-family: 'Montserrat', sans-serif;">
-                                    <option value="monthly" selected>Monthly Trajectory</option>
-                                    <option value="daily">Daily (Last 7 Days)</option>
-                                    <option value="yearly">Yearly Breakdown</option>
-                                    <option value="lifetime">Lifetime All-Time</option>
-                                    <option value="custom">Custom Date Range ▾</option>
-                                </select>
+                            <!-- Custom Date Range Panel -->
+                            <div id="customDateRangeBox"
+                                style="display: none; align-items: center; gap: 10px; background: rgba(0,0,0,0.3); border: 1px dashed rgba(212, 175, 55, 0.25); padding: 8px 12px; border-radius: 4px; margin-bottom: 12px; flex-wrap: wrap;">
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <span
+                                        style="font-size: 0.7rem; color: #8c9b98; text-transform: uppercase;">From:</span>
+                                    <input type="date" id="chartStartDate"
+                                        style="background: #111816; border: 1px solid rgba(255,255,255,0.15); color: #ffffff; font-size: 0.75rem; padding: 3px 8px; border-radius: 3px; outline: none;">
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <span
+                                        style="font-size: 0.7rem; color: #8c9b98; text-transform: uppercase;">To:</span>
+                                    <input type="date" id="chartEndDate"
+                                        style="background: #111816; border: 1px solid rgba(255,255,255,0.15); color: #ffffff; font-size: 0.75rem; padding: 3px 8px; border-radius: 3px; outline: none;">
+                                </div>
+                                <button id="applyCustomDateBtn" type="button"
+                                    style="background: #d4af37; color: #0b0f0e; border: none; font-size: 0.72rem; font-weight: 600; padding: 4px 10px; border-radius: 3px; cursor: pointer;">Apply
+                                    Filter</button>
+                            </div>
+
+                            <div style="position: relative; height: 220px; width: 100%;">
+                                <canvas id="revenueAnalyticsChart"></canvas>
                             </div>
                         </div>
 
-                        <!-- Custom Date Range Panel (Hidden by default, shows when 'custom' is selected) -->
-                        <div id="customDateRangeBox"
-                            style="display: none; align-items: center; gap: 10px; background: rgba(0,0,0,0.3); border: 1px dashed rgba(212, 175, 55, 0.25); padding: 8px 12px; border-radius: 4px; margin-bottom: 12px; flex-wrap: wrap;">
-                            <div style="display: flex; align-items: center; gap: 6px;">
-                                <span style="font-size: 0.7rem; color: #8c9b98; text-transform: uppercase;">From:</span>
-                                <input type="date" id="chartStartDate"
-                                    style="background: #111816; border: 1px solid rgba(255,255,255,0.15); color: #ffffff; font-size: 0.75rem; padding: 3px 8px; border-radius: 3px; outline: none;">
+                        <!-- 2. Top Selling Products (Separated Dedicated Card) -->
+                        <div
+                            style="background: #111816; border: 1px solid rgba(255,255,255,0.08); padding: 22px; border-radius: 6px; display: flex; flex-direction: column;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 10px;">
+                                <div>
+                                    <h3
+                                        style="font-family: 'Playfair Display', serif; font-size: 1.05rem; color: #d4af37; margin: 0;">
+                                        Top Selling Products</h3>
+                                    <span style="font-size: 0.7rem; color: #8c9b98;">Oxylacy sales volume
+                                        analytics</span>
+                                </div>
+                                <button id="openAllBestSellersBtn" type="button"
+                                    style="font-size: 0.68rem; color: #d4af37; background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.3); padding: 3px 8px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 5px;">
+                                    <span>View All</span> <i class="fa-solid fa-arrow-up-right-from-square"
+                                        style="font-size: 0.6rem;"></i>
+                                </button>
                             </div>
-                            <div style="display: flex; align-items: center; gap: 6px;">
-                                <span style="font-size: 0.7rem; color: #8c9b98; text-transform: uppercase;">To:</span>
-                                <input type="date" id="chartEndDate"
-                                    style="background: #111816; border: 1px solid rgba(255,255,255,0.15); color: #ffffff; font-size: 0.75rem; padding: 3px 8px; border-radius: 3px; outline: none;">
+
+                            <div id="topSellingProductsList" style="display: flex; flex-direction: column; gap: 14px;">
+                                <div style="text-align: center; color: #8c9b98; font-size: 0.8rem; padding: 15px;">
+                                    Loading catalog analytics...</div>
                             </div>
-                            <button id="applyCustomDateBtn" type="button"
-                                style="background: #d4af37; color: #0b0f0e; border: none; font-size: 0.72rem; font-weight: 600; padding: 4px 10px; border-radius: 3px; cursor: pointer;">Apply
-                                Filter</button>
                         </div>
 
-                        <div style="position: relative; height: 220px; width: 100%;">
-                            <canvas id="revenueAnalyticsChart"></canvas>
-                        </div>
-                        
                     </div>
 
-                    <!-- Right Column: Activity Feed & Traffic Sources (33% Width) -->
+                    <!-- Right Column Wrapper: (Recent Activity + Traffic Sources) -->
                     <div style="display: flex; flex-direction: column; gap: 20px;">
-                        
+
                         <!-- 1. Recent Activity Card -->
-                        <div style="background: #111816; border: 1px solid rgba(255,255,255,0.08); padding: 22px; border-radius: 6px; display: flex; flex-direction: column;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 10px;">
+                        <div
+                            style="background: #111816; border: 1px solid rgba(255,255,255,0.08); padding: 22px; border-radius: 6px; display: flex; flex-direction: column;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 10px;">
                                 <div>
-                                    <h3 style="font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #d4af37; margin: 0;">Recent Activity</h3>
+                                    <h3
+                                        style="font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #d4af37; margin: 0;">
+                                        Recent Activity</h3>
                                     <span style="font-size: 0.72rem; color: #8c9b98;">Live order timeline</span>
                                 </div>
-                                <span style="font-size: 0.68rem; color: #22c55e; background: rgba(34, 197, 94, 0.1); padding: 3px 6px; border-radius: 4px; border: 1px solid rgba(34, 197, 94, 0.2);">
-                                    <i class="fa-solid fa-circle" style="font-size: 0.45rem; vertical-align: middle;"></i> Live
+                                <span
+                                    style="font-size: 0.68rem; color: #22c55e; background: rgba(34, 197, 94, 0.1); padding: 3px 6px; border-radius: 4px; border: 1px solid rgba(34, 197, 94, 0.2);">
+                                    <i class="fa-solid fa-circle"
+                                        style="font-size: 0.45rem; vertical-align: middle;"></i> Live
                                 </span>
                             </div>
 
-                            <div id="recentActivityList" style="display: flex; flex-direction: column; gap: 10px; max-height: 220px; overflow-y: auto;">
-                                <div style="text-align: center; color: #8c9b98; font-size: 0.82rem; padding: 20px;">Loading live activity stream...</div>
+                            <div id="recentActivityList"
+                                style="display: flex; flex-direction: column; gap: 10px; max-height: 220px; overflow-y: auto;">
+                                <div style="text-align: center; color: #8c9b98; font-size: 0.82rem; padding: 20px;">
+                                    Loading live activity stream...</div>
                             </div>
                         </div>
 
                         <!-- 2. Traffic Acquisition Donut Chart Card -->
-                        <div style="background: #111816; border: 1px solid rgba(255,255,255,0.08); padding: 22px; border-radius: 6px; display: flex; flex-direction: column;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 10px;">
+                        <div
+                            style="background: #111816; border: 1px solid rgba(255,255,255,0.08); padding: 22px; border-radius: 6px; display: flex; flex-direction: column;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 10px;">
                                 <div>
-                                    <h3 style="font-family: 'Playfair Display', serif; font-size: 1.05rem; color: #d4af37; margin: 0;">Traffic Acquisition</h3>
+                                    <h3
+                                        style="font-family: 'Playfair Display', serif; font-size: 1.05rem; color: #d4af37; margin: 0;">
+                                        Traffic Acquisition</h3>
                                     <span style="font-size: 0.7rem; color: #8c9b98;">Client origin channels</span>
                                 </div>
-                                <span style="font-size: 0.68rem; color: #d4af37; background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.3); padding: 2px 7px; border-radius: 4px;">
+                                <span
+                                    style="font-size: 0.68rem; color: #d4af37; background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.3); padding: 2px 7px; border-radius: 4px;">
                                     Direct / Social
                                 </span>
                             </div>
@@ -520,7 +306,7 @@
                                 fulfillments, and review client purchases.</p>
                         </div>
                         <button id="refreshOrdersBtn" class="btn btn-secondary"
-                            style="padding: 8px 18px; font-size: 0.8rem;">
+                            style="padding: 8px 18px; font-size: 0.8rem; background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.3); color: #d4af37; cursor: pointer; border-radius: 4px;">
                             <i class="fa-solid fa-rotate"></i> Refresh Orders
                         </button>
                     </div>
@@ -562,7 +348,7 @@
                                 remove creations directly from catalog.</p>
                         </div>
                         <button id="refreshProductsBtn" class="btn btn-secondary"
-                            style="padding: 8px 18px; font-size: 0.8rem;">
+                            style="padding: 8px 18px; font-size: 0.8rem; background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.3); color: #d4af37; cursor: pointer; border-radius: 4px;">
                             <i class="fa-solid fa-rotate"></i> Refresh Products
                         </button>
                     </div>
@@ -663,8 +449,9 @@
                                 style="width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px; resize: vertical; box-sizing: border-box;"></textarea>
                         </div>
 
-                        <button type="submit" id="submitProductBtn" class="btn btn-primary"
-                            style="padding: 14px 30px; letter-spacing: 1.5px;">PUBLISH TO LIVE INVENTORY</button>
+                        <button type="submit" id="submitProductBtn"
+                            style="background: #d4af37; color: #111816; border: none; font-weight: 600; padding: 14px 30px; letter-spacing: 1.5px; border-radius: 4px; cursor: pointer;">PUBLISH
+                            TO LIVE INVENTORY</button>
                     </form>
                 </div>
             </div>
@@ -688,8 +475,8 @@
                                 <input type="text" id="catNameInput" required
                                     placeholder="e.g. Perfumes, Sunglasses, Shoes"
                                     style="flex: 1; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px;">
-                                <button type="submit" id="addCategoryBtn" class="btn btn-primary"
-                                    style="padding: 12px 20px;">CREATE</button>
+                                <button type="submit" id="addCategoryBtn"
+                                    style="background: #d4af37; color: #111816; border: none; font-weight: 600; padding: 12px 20px; border-radius: 4px; cursor: pointer;">CREATE</button>
                             </div>
                         </form>
 
@@ -719,8 +506,8 @@
                             <p style="color: #8c9b98; font-size: 0.85rem; margin-top: 4px;">Review concierge queries and
                                 client correspondence.</p>
                         </div>
-                        <button id="refreshMessagesBtn" class="btn btn-secondary"
-                            style="padding: 8px 18px; font-size: 0.8rem;">
+                        <button id="refreshMessagesBtn"
+                            style="padding: 8px 18px; font-size: 0.8rem; background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.3); color: #d4af37; cursor: pointer; border-radius: 4px;">
                             <i class="fa-solid fa-rotate"></i> Refresh Messages
                         </button>
                     </div>
@@ -749,7 +536,7 @@
         </main>
     </div>
 
-    <!-- Product Edit Modal (POPUP - Same IDs) -->
+    <!-- Product Edit Modal -->
     <div id="editProductModal"
         style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center; padding: 20px;">
         <div
@@ -816,261 +603,46 @@
                         style="width: 100%; padding: 10px; background: #0c0d0e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px; box-sizing: border-box;"></textarea>
                 </div>
                 <div style="display: flex; justify-content: flex-end; gap: 10px;">
-                    <button type="button" id="cancelEditModalBtn" class="btn btn-secondary"
-                        style="padding: 10px 20px;">Cancel</button>
-                    <button type="submit" class="btn btn-primary" style="padding: 10px 25px;">SAVE CHANGES</button>
+                    <button type="button" id="cancelEditModalBtn"
+                        style="background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 4px; cursor: pointer;">Cancel</button>
+                    <button type="submit"
+                        style="background: #d4af37; color: #111816; border: none; font-weight: 600; padding: 10px 25px; border-radius: 4px; cursor: pointer;">SAVE
+                        CHANGES</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Scripts & Tab Management -->
-    <script src="js/script.js"></script>
-    <script>
-        // Logout Execution
-        const logoutBtn = document.getElementById('adminLogoutBtn');
-        if (logoutBtn) {
-            logoutBtn.addEventListener('click', () => {
-                if (confirm('Are you sure you want to exit the Atelier Command Center?')) {
-                    localStorage.removeItem('oxylacy_admin_token');
-                    localStorage.removeItem('oxylacy_admin_user');
-                    window.location.href = 'admin-login.html';
-                }
-            });
-        }
+    <!-- All Best Selling Products Analytics Modal -->
+    <div id="allBestSellersModal"
+        style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center; padding: 20px;">
+        <div
+            style="background: #141416; border: 1px solid rgba(212,175,55,0.3); border-radius: 6px; width: 100%; max-width: 650px; max-height: 85vh; overflow-y: auto; padding: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.9);">
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 12px;">
+                <div>
+                    <h3 style="font-family: 'Playfair Display', serif; color: #d4af37; font-size: 1.3rem; margin: 0;">
+                        Comprehensive Sales Analytics</h3>
+                    <span style="font-size: 0.72rem; color: #8c9b98;">Full catalog ranking calculated from customer
+                        orders</span>
+                </div>
+                <button id="closeBestSellersModalBtn"
+                    style="background: none; border: none; color: #a1a1aa; font-size: 1.2rem; cursor: pointer;"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
 
-        // Tab Switching Mechanism
-        const navItems = document.querySelectorAll('.nav-item');
-        const tabPanels = document.querySelectorAll('.tab-panel');
-        const tabTitle = document.getElementById('currentTabTitle');
+            <div id="allBestSellersList" style="display: flex; flex-direction: column; gap: 12px;">
+                <div style="text-align: center; color: #8c9b98; font-size: 0.85rem; padding: 20px;">Loading complete
+                    sales records...</div>
+            </div>
+        </div>
+    </div>
 
-        navItems.forEach(item => {
-            item.addEventListener('click', () => {
-                navItems.forEach(n => n.classList.remove('active'));
-                tabPanels.forEach(p => p.classList.remove('active'));
+    <!-- Mobile Sidebar Backdrop Overlay -->
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
 
-                item.classList.add('active');
-                const targetTabId = item.getAttribute('data-tab');
-                const targetPanel = document.getElementById(targetTabId);
-                if (targetPanel) targetPanel.classList.add('active');
-
-                if (tabTitle) {
-                    tabTitle.textContent = item.querySelector('span')?.textContent || 'Dashboard';
-                }
-            });
-        });
-
-        // Render Recent Activity Feed
-        async function loadRecentActivity() {
-            const container = document.getElementById('recentActivityList');
-            if (!container) return;
-
-            try {
-                const res = await fetch('http://localhost:5000/api/orders');
-                const data = await res.json();
-                const orders = Array.isArray(data) ? data : (data.orders || []);
-
-                if (orders.length === 0) {
-                    container.innerHTML = '<div style="text-align: center; color: #8c9b98; font-size: 0.82rem; padding: 20px;">No recent transactions recorded.</div>';
-                    return;
-                }
-
-                container.innerHTML = '';
-                orders.slice(0, 5).forEach(order => {
-                    const dateFormatted = new Date(order.createdAt || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' });
-                    const statusColor = order.status === 'Delivered' ? '#22c55e' : (order.status === 'Processing' ? '#38bdf8' : '#d4af37');
-
-                    const item = document.createElement('div');
-                    item.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); border-radius: 4px;';
-                    item.innerHTML = `
-                        <div style="display: flex; align-items: center; gap: 12px;">
-                            <div style="width: 32px; height: 32px; border-radius: 50%; background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.3); display: flex; align-items: center; justify-content: center; color: #d4af37; font-size: 0.8rem;">
-                                <i class="fa-solid fa-cart-shopping"></i>
-                            </div>
-                            <div>
-                                <div style="font-size: 0.84rem; color: #ffffff; font-weight: 500;">
-                                    Order <span style="color: #d4af37;">#${order.orderId || order._id || order.id}</span> placed by <span style="color: #e4e4e7;">${order.customerName || order.customer?.name || 'Client'}</span>
-                                </div>
-                                <div style="font-size: 0.72rem; color: #8c9b98;">${dateFormatted}</div>
-                            </div>
-                        </div>
-                        <div style="text-align: right;">
-                            <div style="font-size: 0.88rem; font-weight: 600; color: #ffffff;">$${Number(order.totalAmount || 0).toFixed(2)}</div>
-                            <span style="font-size: 0.68rem; color: ${statusColor}; text-transform: uppercase; font-weight: 600;">${order.status || 'Pending'}</span>
-                        </div>
-                    `;
-                    container.appendChild(item);
-                });
-            } catch (err) {
-                console.error('Error fetching activity stream:', err);
-                container.innerHTML = '<div style="text-align: center; color: #f87171; font-size: 0.82rem; padding: 15px;">Failed to load activity feed.</div>';
-            }
-        }
-
-        loadRecentActivity();
-
-        // Render Dashboard Analytics Chart with Timeframe Filtering
-        let salesChartInstance = null;
-
-        const chartDatasets = {
-            monthly: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                data: [0, 0, 0, 0, 0, 0, 0, 540, 0, 0, 0, 0]
-            },
-            daily: {
-                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                data: [0, 0, 0, 0, 540, 0, 0]
-            },
-            yearly: {
-                labels: ['2023', '2024', '2025', '2026'],
-                data: [0, 0, 0, 540]
-            },
-            lifetime: {
-                labels: ['Launch Q1', 'Q2 Trajectory', 'Q3 Manifest', 'Q4 Target'],
-                data: [0, 0, 540, 540]
-            }
-        };
-
-        function renderRevenueChart(labels, dataPoints) {
-            const ctx = document.getElementById('revenueAnalyticsChart');
-            if (!ctx) return;
-
-            if (salesChartInstance) {
-                salesChartInstance.destroy();
-            }
-
-            salesChartInstance = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Gross Volume ($)',
-                        data: dataPoints,
-                        borderColor: '#d4af37',
-                        backgroundColor: 'rgba(212, 175, 55, 0.08)',
-                        borderWidth: 2,
-                        fill: true,
-                        tension: 0.4,
-                        pointBackgroundColor: '#d4af37',
-                        pointBorderColor: '#111816',
-                        pointRadius: 4,
-                        pointHoverRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: '#111816',
-                            titleColor: '#d4af37',
-                            bodyColor: '#ffffff',
-                            borderColor: 'rgba(212, 175, 55, 0.3)',
-                            borderWidth: 1,
-                            padding: 10
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: { color: 'rgba(255, 255, 255, 0.04)' },
-                            ticks: { color: '#8c9b98', font: { family: 'Montserrat', size: 10 } }
-                        },
-                        y: {
-                            grid: { color: 'rgba(255, 255, 255, 0.04)' },
-                            ticks: { color: '#8c9b98', font: { family: 'Montserrat', size: 10 } }
-                        }
-                    }
-                }
-            });
-        }
-
-        // Initialize default view
-        renderRevenueChart(chartDatasets.monthly.labels, chartDatasets.monthly.data);
-
-        // Timeframe Selector Interaction
-        const timeframeSelect = document.getElementById('chartTimeframeSelect');
-        const customDateBox = document.getElementById('customDateRangeBox');
-        const applyDateBtn = document.getElementById('applyCustomDateBtn');
-
-        if (timeframeSelect) {
-            timeframeSelect.addEventListener('change', (e) => {
-                const val = e.target.value;
-                if (val === 'custom') {
-                    if (customDateBox) customDateBox.style.display = 'flex';
-                } else {
-                    if (customDateBox) customDateBox.style.display = 'none';
-                    if (chartDatasets[val]) {
-                        renderRevenueChart(chartDatasets[val].labels, chartDatasets[val].data);
-                    }
-                }
-            });
-        }
-
-        if (applyDateBtn) {
-            applyDateBtn.addEventListener('click', () => {
-                const startDate = document.getElementById('chartStartDate').value;
-                const endDate = document.getElementById('chartEndDate').value;
-                if (!startDate || !endDate) {
-                    alert('Please select both Start and End dates.');
-                    return;
-                }
-                renderRevenueChart([startDate, endDate], [540, 540]);
-            });
-        }
-
-        // Render Traffic Acquisition Donut Chart
-        function initTrafficSourceChart() {
-            const ctx = document.getElementById('trafficSourceChart');
-            if (!ctx) return;
-
-            new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Direct Search', 'Social Concierge', 'Private Referral', 'VIP Atelier'],
-                    datasets: [{
-                        data: [45, 25, 20, 10],
-                        backgroundColor: [
-                            '#d4af37',
-                            '#38bdf8',
-                            '#22c55e',
-                            '#8c9b98'
-                        ],
-                        borderColor: '#111816',
-                        borderWidth: 3
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'right',
-                            labels: {
-                                color: '#8c9b98',
-                                boxWidth: 10,
-                                font: {
-                                    family: 'Montserrat',
-                                    size: 10
-                                }
-                            }
-                        },
-                        tooltip: {
-                            backgroundColor: '#111816',
-                            titleColor: '#d4af37',
-                            bodyColor: '#ffffff',
-                            borderColor: 'rgba(212, 175, 55, 0.3)',
-                            borderWidth: 1,
-                            padding: 8
-                        }
-                    },
-                    cutout: '70%'
-                }
-            });
-        }
-
-        initTrafficSourceChart();
-    </script>
+    <!-- Complete Client & Real Database Execution Engine -->
+    <script src="js/admin.js"></script>
 </body>
 
 </html>
