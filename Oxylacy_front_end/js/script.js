@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <img src="${p.image}" style="width: 38px; height: 38px; object-fit: cover; border-radius: 4px; border: 1px solid rgba(255,255,255,0.15);">
                 <div style="flex: 1; min-width: 0;">
                     <div style="font-size: 0.85rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${p.name}</div>
-                    <div style="font-size: 0.75rem; color: #d4af37;">$${Number(p.price).toFixed(2)}</div>
+                    <div style="font-size: 0.75rem; color: #d4af37;">৳ ${Number(p.price).toLocaleString()}</div>
                 </div>
             `;
             searchSuggestions.appendChild(item);
@@ -243,7 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <div class="product-info">
                                 <span class="product-category">${item.category}</span>
                                 <h3 class="product-name">${item.name}</h3>
-                                <p class="product-price">$${Number(item.price).toFixed(2)} ${item.originalPrice ? `<span class="old-price" style="text-decoration: line-through; opacity: 0.6; margin-left: 6px;">$${Number(item.originalPrice).toFixed(2)}</span>` : ''}</p>
+                                <p class="product-price">৳ ${Number(item.price).toLocaleString()} ${item.originalPrice ? `<span class="old-price" style="text-decoration: line-through; opacity: 0.6; margin-left: 6px;">৳ ${Number(item.originalPrice).toLocaleString()}</span>` : ''}</p>
                                 <a href="product-details.html?id=${item.id}" class="btn-product">View Details</a>
                             </div>
                         `;
@@ -324,7 +324,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         const detailsPrice = document.querySelector('.details-price');
                         if (detailsPrice) {
-                            detailsPrice.innerHTML = `$${Number(product.price).toFixed(2)} ${product.originalPrice ? `<span style="font-size: 0.6em; text-decoration: line-through; opacity: 0.6; margin-left: 8px;">$${Number(product.originalPrice).toFixed(2)}</span>` : ''}`;
+                            detailsPrice.innerHTML = `৳ ${Number(product.price).toLocaleString()} ${product.originalPrice ? `<span style="font-size: 0.6em; text-decoration: line-through; opacity: 0.6; margin-left: 8px;">৳ ${Number(product.originalPrice).toLocaleString()}</span>` : ''}`;
                         }
 
                         const detailsDesc = document.querySelector('.details-description');
@@ -442,7 +442,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <img src="${item.image}" alt="${item.name}" class="cart-item-img">
                         <div class="cart-item-meta">
                             <h4 class="item-name">${item.name}</h4>
-                            <span class="item-unit-price">$${Number(item.price).toFixed(2)}</span>
+                            <span class="item-unit-price">৳ ${Number(item.price).toLocaleString()}</span>
                         </div>
                     </div>
                     <div class="cart-item-qty">
@@ -452,7 +452,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <button class="qty-btn qty-plus" data-index="${index}">+</button>
                         </div>
                     </div>
-                    <div class="cart-item-total">$${itemSubtotal.toFixed(2)}</div>
+                    <div class="cart-item-total">৳ ${Number(itemSubtotal).toLocaleString()}</div>
                     <button class="remove-item-btn" data-index="${index}" title="Remove creation">
                         <i class="fa-solid fa-xmark"></i>
                     </button>
@@ -473,8 +473,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const subtotalEl = document.querySelector('.summary-row .summary-val');
             const totalEl = document.querySelector('.summary-total-row .total-price');
 
-            if (subtotalEl) subtotalEl.textContent = `$${total.toFixed(2)}`;
-            if (totalEl) totalEl.textContent = `$${total.toFixed(2)}`;
+            if (subtotalEl) subtotalEl.textContent = `৳ ${Number(total).toLocaleString()}`;
+            if (totalEl) totalEl.textContent = `৳ ${Number(total).toLocaleString()}`;
         }
 
         function attachCartEvents() {
@@ -544,7 +544,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <div class="product-info">
                                 <span class="product-category">${product.category || 'Luxury'}</span>
                                 <h3 class="product-name">${product.name}</h3>
-                                <p class="product-price">$${Number(product.price).toFixed(2)} ${product.originalPrice ? `<span style="font-size: 0.85em; text-decoration: line-through; opacity: 0.6; margin-left: 6px;">$${Number(product.originalPrice).toFixed(2)}</span>` : ''}</p>
+                                <p class="product-price">৳ ${Number(product.price).toLocaleString()} ${product.originalPrice ? `<span style="font-size: 0.85em; text-decoration: line-through; opacity: 0.6; margin-left: 6px;">৳ ${Number(product.originalPrice).toLocaleString()}</span>` : ''}</p>
                                 <a href="product-details.html?id=${product.id}" class="btn-product">View Details</a>
                             </div>
                         `;
@@ -555,97 +555,97 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(err => console.error('Error loading featured products on homepage:', err));
     }
 
-    /* =======================================================
-       10. Checkout Form & Order Submission
-    ======================================================= */
-    const checkoutForm = document.getElementById('checkoutForm');
-    const checkoutItemsList = document.getElementById('checkoutItemsList');
+   /* =======================================================
+   10. Checkout Form & Order Submission
+======================================================= */
+const checkoutForm = document.getElementById('checkoutForm');
+const checkoutItemsList = document.getElementById('checkoutItemsList');
 
-    if (checkoutForm && checkoutItemsList) {
-        const cart = JSON.parse(localStorage.getItem('oxylacy_cart')) || [];
-        let grandTotal = 0;
+if (checkoutForm && checkoutItemsList) {
+    const cart = JSON.parse(localStorage.getItem('oxylacy_cart')) || [];
+    let grandTotal = 0;
+
+    if (cart.length === 0) {
+        checkoutItemsList.innerHTML = '<p style="color: #a1a1aa; font-size: 0.9rem;">No creations in bag.</p>';
+    } else {
+        checkoutItemsList.innerHTML = '';
+        cart.forEach(item => {
+            const itemTotal = item.price * item.quantity;
+            grandTotal += itemTotal;
+
+            const itemDiv = document.createElement('div');
+            itemDiv.style.display = 'flex';
+            itemDiv.style.justifyContent = 'space-between';
+            itemDiv.style.alignItems = 'center';
+            itemDiv.style.marginBottom = '12px';
+            itemDiv.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <img src="${item.image}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 3px;">
+                    <div>
+                        <div style="color: #fff; font-size: 0.85rem; font-weight: 500;">${item.name}</div>
+                        <div style="color: #a1a1aa; font-size: 0.75rem;">Qty: ${item.quantity} × ৳ ${Number(item.price).toLocaleString()}</div>
+                    </div>
+                </div>
+                <span style="color: #d4af37; font-size: 0.9rem; font-weight: 600;">৳ ${Number(itemTotal).toLocaleString()}</span>
+            `;
+            checkoutItemsList.appendChild(itemDiv);
+        });
+    }
+
+    const subtotalEl = document.getElementById('checkoutSubtotal');
+    const totalEl = document.getElementById('checkoutTotal');
+    if (subtotalEl) subtotalEl.textContent = `৳ ${Number(grandTotal).toLocaleString()}`;
+    if (totalEl) totalEl.textContent = `৳ ${Number(grandTotal).toLocaleString()}`;
+
+    checkoutForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
         if (cart.length === 0) {
-            checkoutItemsList.innerHTML = '<p style="color: #a1a1aa; font-size: 0.9rem;">No creations in bag.</p>';
-        } else {
-            checkoutItemsList.innerHTML = '';
-            cart.forEach(item => {
-                const itemTotal = item.price * item.quantity;
-                grandTotal += itemTotal;
-
-                const itemDiv = document.createElement('div');
-                itemDiv.style.display = 'flex';
-                itemDiv.style.justifyContent = 'space-between';
-                itemDiv.style.alignItems = 'center';
-                itemDiv.style.marginBottom = '12px';
-                itemDiv.innerHTML = `
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <img src="${item.image}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 3px;">
-                        <div>
-                            <div style="color: #fff; font-size: 0.85rem; font-weight: 500;">${item.name}</div>
-                            <div style="color: #a1a1aa; font-size: 0.75rem;">Qty: ${item.quantity} × $${Number(item.price).toFixed(2)}</div>
-                        </div>
-                    </div>
-                    <span style="color: #d4af37; font-size: 0.9rem; font-weight: 600;">$${itemTotal.toFixed(2)}</span>
-                `;
-                checkoutItemsList.appendChild(itemDiv);
-            });
+            alert('Your bag is empty! Please add products before placing an order.');
+            return;
         }
 
-        const subtotalEl = document.getElementById('checkoutSubtotal');
-        const totalEl = document.getElementById('checkoutTotal');
-        if (subtotalEl) subtotalEl.textContent = `$${grandTotal.toFixed(2)}`;
-        if (totalEl) totalEl.textContent = `$${grandTotal.toFixed(2)}`;
+        const orderData = {
+            orderId: 'OXY-' + Math.floor(100000 + Math.random() * 900000),
+            customerName: document.getElementById('custName')?.value || 'Guest',
+            email: document.getElementById('custEmail')?.value || '',
+            phone: document.getElementById('custPhone')?.value || '',
+            address: `${document.getElementById('custAddress')?.value || ''}, ${document.getElementById('custCity')?.value || ''}, ${document.getElementById('custCountry')?.value || ''}`,
+            items: cart,
+            totalAmount: grandTotal,
+            paymentMethod: 'Cash on Delivery',
+            status: 'Pending'
+        };
 
-        checkoutForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
+        const submitBtn = document.getElementById('placeOrderBtn');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Processing Order...';
 
-            if (cart.length === 0) {
-                alert('Your bag is empty! Please add products before placing an order.');
-                return;
-            }
+        try {
+            const res = await fetch('http://localhost:5000/api/orders', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(orderData)
+            });
+            const data = await res.json();
 
-            const orderData = {
-                orderId: 'OXY-' + Math.floor(100000 + Math.random() * 900000),
-                customerName: document.getElementById('custName')?.value || 'Guest',
-                email: document.getElementById('custEmail')?.value || '',
-                phone: document.getElementById('custPhone')?.value || '',
-                address: `${document.getElementById('custAddress')?.value || ''}, ${document.getElementById('custCity')?.value || ''}, ${document.getElementById('custCountry')?.value || ''}`,
-                items: cart,
-                totalAmount: grandTotal,
-                paymentMethod: 'Cash on Delivery',
-                status: 'Pending'
-            };
-
-            const submitBtn = document.getElementById('placeOrderBtn');
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Processing Order...';
-
-            try {
-                const res = await fetch('http://localhost:5000/api/orders', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(orderData)
-                });
-                const data = await res.json();
-
-                if (data.success) {
-                    localStorage.removeItem('oxylacy_cart');
-                    alert('✨ Congratulations! Your order has been placed successfully.\nOrder ID: #' + (data.order.orderId || data.order.id));
-                    window.location.href = 'index.html';
-                } else {
-                    alert('Order placement failed: ' + (data.error || 'Server error'));
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'CONFIRM & PLACE ATELIER ORDER';
-                }
-            } catch (err) {
-                console.error('Order error:', err);
-                alert('Failed to connect to the server.');
+            if (data.success) {
+                localStorage.removeItem('oxylacy_cart');
+                alert('✨ Congratulations! Your order has been placed successfully.\nOrder ID: #' + (data.order.orderId || data.order.id));
+                window.location.href = 'index.html';
+            } else {
+                alert('Order placement failed: ' + (data.error || 'Server error'));
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'CONFIRM & PLACE ATELIER ORDER';
             }
-        });
-    }
+        } catch (err) {
+            console.error('Order error:', err);
+            alert('Failed to connect to the server.');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'CONFIRM & PLACE ATELIER ORDER';
+        }
+    });
+}
 
     /* =======================================================
        11. Contact Form Submission

@@ -289,7 +289,7 @@ async function fetchDashboardData() {
                                 <td><strong>#${o.orderId || o.id}</strong><br><small style="color:#8c9b98;">${formattedDate}</small></td>
                                 <td>${o.customerName || 'Client'}<br><small style="color:#8c9b98;">${o.email || ''}</small></td>
                                 <td>${itemsSummary}</td>
-                                <td><strong>$${amt.toFixed(2)}</strong></td>
+                                <td><strong>৳ ${Number(amt).toLocaleString()}</strong></td>
                                 <td>
                                     <select class="status-select" data-id="${safeId}" style="background:#0b0f0e; border:1px solid rgba(212,175,55,0.3); color:#d4af37; padding:4px 8px; border-radius:4px; font-size:0.75rem;">
                                         <option value="Pending" ${o.status === 'Pending' ? 'selected' : ''}>Pending</option>
@@ -339,7 +339,7 @@ async function fetchDashboardData() {
 
         // Update Stat Numbers
         document.getElementById('statTotalOrders').textContent = globalOrders.length;
-        document.getElementById('statTotalRevenue').textContent = `$${totalRev.toFixed(2)}`;
+        document.getElementById('statTotalRevenue').textContent = `৳ ${Math.round(totalRev).toLocaleString()}`;
         document.getElementById('statPendingOrders').textContent = pendingCount;
 
         // Render Live Timeline Activity
@@ -418,7 +418,7 @@ async function fetchProductsAndBestSellers() {
                                 </div>
                             </td>
                             <td><span style="text-transform: uppercase; font-size: 0.75rem; color: #8c9b98;">${p.category}</span></td>
-                            <td>$${Number(p.price).toFixed(2)}</td>
+                            <td>৳ ${Number(p.price).toLocaleString()}</td>
                             <td><span style="background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.3); color: #d4af37; padding: 2px 6px; border-radius: 3px; font-size: 0.7rem;">${p.tag || 'Standard'}</span></td>
                             <td style="text-align: right;">
                                 <button onclick="openEditModal(${p.id})" style="background: none; border: none; color: #38bdf8; cursor: pointer; margin-right: 10px;"><i class="fa-solid fa-pen"></i></button>
@@ -730,7 +730,7 @@ if (sidebarToggleBtn && adminSidebar && sidebarOverlay) {
 }
 
 
-// --- Isolated Dynamic Receipt Print Engine (Bulletproof) ---
+// --- Isolated Dynamic Receipt Print Engine (BDT Version) ---
 function printReceiptById(orderId) {
     // ১. সব সম্ভাব্য সোর্স (globalOrders ও localStorage) থেকে অর্ডার খোঁজা
     let orders = [];
@@ -767,7 +767,7 @@ function printReceiptById(orderId) {
         <tr>
             <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${item.name || item.title || 'Creation'}</td>
             <td style="padding: 10px 0; border-bottom: 1px solid #eee; text-align: center;">${item.quantity || 1}</td>
-            <td style="padding: 10px 0; border-bottom: 1px solid #eee; text-align: right;">$${Number((item.price || 0) * (item.quantity || 1)).toFixed(2)}</td>
+            <td style="padding: 10px 0; border-bottom: 1px solid #eee; text-align: right;">৳ ${Number((item.price || 0) * (item.quantity || 1)).toLocaleString()}</td>
         </tr>
     `).join('');
 
@@ -823,7 +823,7 @@ function printReceiptById(orderId) {
                 </tbody>
             </table>
             <div class="total">
-                Total Obligation: $${Number(order.totalAmount || 0).toFixed(2)}
+                Total Obligation: ৳ ${Number(order.totalAmount || 0).toLocaleString()}
             </div>
         </body>
         </html>

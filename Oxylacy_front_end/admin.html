@@ -135,7 +135,7 @@
                             Revenue Volume</div>
                         <div id="statTotalRevenue"
                             style="font-family: 'Playfair Display', serif; font-size: 2.2rem; color: #fff; margin-top: 8px;">
-                            $0.00</div>
+                            ৳ 0</div>
                     </div>
                     <div
                         style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); padding: 25px; border-radius: 6px; text-align: center;">
@@ -411,15 +411,15 @@
                             <div>
                                 <label
                                     style="display: block; font-size: 0.8rem; color: #a1a1aa; margin-bottom: 6px; text-transform: uppercase;">Price
-                                    ($ USD) *</label>
-                                <input type="number" id="pPrice" step="0.01" required placeholder="450.00"
-                                    style="width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px; box-sizing: border-box;">
+                                    (৳ BDT) *</label>
+                                <input type="number" id="pPrice" step="1" required placeholder="25000" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px; box-sizing:
+                            border-box;">
                             </div>
                             <div>
                                 <label
                                     style="display: block; font-size: 0.8rem; color: #a1a1aa; margin-bottom: 6px; text-transform: uppercase;">Original
-                                    / Compare Price ($)</label>
-                                <input type="number" id="pOriginalPrice" step="0.01" placeholder="520.00"
+                                    / Compare Price (৳)</label>
+                                <input type="number" id="pOriginalPrice" step="1" placeholder="30000"
                                     style="width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px; box-sizing: border-box;">
                             </div>
                             <div>
@@ -574,43 +574,41 @@
                     </div>
                 </div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-                    <div>
-                        <label
-                            style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 5px; text-transform: uppercase;">Price
-                            ($)</label>
-                        <input type="number" step="0.01" id="editPPrice" required
-                            style="width: 100%; padding: 10px; background: #0c0d0e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px; box-sizing: border-box;">
-                    </div>
-                    <div>
-                        <label
-                            style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 5px; text-transform: uppercase;">Compare
-                            Price ($)</label>
-                        <input type="number" step="0.01" id="editPOriginalPrice"
-                            style="width: 100%; padding: 10px; background: #0c0d0e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px; box-sizing: border-box;">
+                        <div>
+                            <label style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 5px; text-transform: uppercase;">Price (৳ BDT)</label>
+                            <input type="number" step="1" id="editPPrice" required style="width: 100%; padding: 10px; background: #0c0d0e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px; box-sizing: border-box;">
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 5px; text-transform: uppercase;">Compare Price (৳ BDT)</label>
+                            <input type="number" step="1" id="editPOriginalPrice" style="width: 100%; padding: 10px; background: #0c0d0e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px; box-sizing: border-box;">
+                        </div>
                     </div>
                 </div>
-                <div style="margin-bottom: 15px;">
-                    <label
-                        style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 5px; text-transform: uppercase;">Image
-                        Path / URL</label>
-                    <input type="text" id="editPImage" required
-                        style="width: 100%; padding: 10px; background: #0c0d0e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px; box-sizing: border-box;">
-                </div>
-                <div style="margin-bottom: 20px;">
-                    <label
-                        style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 5px; text-transform: uppercase;">Description</label>
-                    <textarea id="editPDescription" rows="3" required
-                        style="width: 100%; padding: 10px; background: #0c0d0e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px; box-sizing: border-box;"></textarea>
-                </div>
-                <div style="display: flex; justify-content: flex-end; gap: 10px;">
-                    <button type="button" id="cancelEditModalBtn"
-                        style="background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 4px; cursor: pointer;">Cancel</button>
-                    <button type="submit"
-                        style="background: #d4af37; color: #111816; border: none; font-weight: 600; padding: 10px 25px; border-radius: 4px; cursor: pointer;">SAVE
-                        CHANGES</button>
-                </div>
-            </form>
         </div>
+    </div>
+    </div>
+    <div style="margin-bottom: 15px;">
+        <label
+            style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 5px; text-transform: uppercase;">Image
+            Path / URL</label>
+        <input type="text" id="editPImage" required
+            style="width: 100%; padding: 10px; background: #0c0d0e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px; box-sizing: border-box;">
+    </div>
+    <div style="margin-bottom: 20px;">
+        <label
+            style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 5px; text-transform: uppercase;">Description</label>
+        <textarea id="editPDescription" rows="3" required
+            style="width: 100%; padding: 10px; background: #0c0d0e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px; box-sizing: border-box;"></textarea>
+    </div>
+    <div style="display: flex; justify-content: flex-end; gap: 10px;">
+        <button type="button" id="cancelEditModalBtn"
+            style="background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 4px; cursor: pointer;">Cancel</button>
+        <button type="submit"
+            style="background: #d4af37; color: #111816; border: none; font-weight: 600; padding: 10px 25px; border-radius: 4px; cursor: pointer;">SAVE
+            CHANGES</button>
+    </div>
+    </form>
+    </div>
     </div>
 
     <!-- All Best Selling Products Analytics Modal -->
