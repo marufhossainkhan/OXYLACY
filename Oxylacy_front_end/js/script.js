@@ -381,8 +381,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const productId = urlParams.get('id');
             const title = document.querySelector('.details-title')?.textContent || 'Luxury Product';
-            const priceText = document.querySelector('.details-price')?.textContent || '$0';
-            const price = parseFloat(priceText.replace(/[^0-9.]/g, '')) || 0;
+            const priceEl = document.querySelector('.details-price');
+            const mainPriceText = priceEl ? (priceEl.cloneNode(true).querySelector('span')?.remove(), priceEl.textContent) : '0';
+            const price = parseFloat(mainPriceText.replace(/[^0-9.]/g, '')) || 0;
             const img = document.getElementById('mainProductImg')?.getAttribute('src') || '';
             const qtyInput = document.querySelector('.qty-input');
             const quantity = qtyInput ? parseInt(qtyInput.value) || 1 : 1;
@@ -555,30 +556,49 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(err => console.error('Error loading featured products on homepage:', err));
     }
 
-   /* =======================================================
-   10. Checkout Form & Order Submission
-======================================================= */
-const checkoutForm = document.getElementById('checkoutForm');
-const checkoutItemsList = document.getElementById('checkoutItemsList');
+    /* =======================================================
+    12. Checkout Form & Order Submission
+ ======================================================= */
+    const checkoutForm = document.getElementById('checkoutForm');
+    const checkoutItemsList = document.getElementById('checkoutItemsList');
 
-if (checkoutForm && checkoutItemsList) {
-    const cart = JSON.parse(localStorage.getItem('oxylacy_cart')) || [];
-    let grandTotal = 0;
+    if (checkoutForm && checkoutItemsList) {
+        const cart = JSON.parse(localStorage.getItem('oxylacy_cart')) || [];
+        let itemsSubtotal = 0;
+        let selectedShipping = 0;
 
-    if (cart.length === 0) {
-        checkoutItemsList.innerHTML = '<p style="color: #a1a1aa; font-size: 0.9rem;">No creations in bag.</p>';
-    } else {
-        checkoutItemsList.innerHTML = '';
-        cart.forEach(item => {
-            const itemTotal = item.price * item.quantity;
-            grandTotal += itemTotal;
+        // Load dynamic shipping charges set by admin (Fallback to 70 & 130)
+        const insideRate = parseInt(localStorage.getItem('oxylacy_shipping_inside')) || 70;
+        const outsideRate = parseInt(localStorage.getItem('oxylacy_shipping_outside')) || 130;
 
-            const itemDiv = document.createElement('div');
-            itemDiv.style.display = 'flex';
-            itemDiv.style.justifyContent = 'space-between';
-            itemDiv.style.alignItems = 'center';
-            itemDiv.style.marginBottom = '12px';
-            itemDiv.innerHTML = `
+        const radioInside = document.getElementById('radioInsideDhaka');
+        const radioOutside = document.getElementById('radioOutsideDhaka');
+        const labelInside = document.getElementById('labelInsideFee');
+        const labelOutside = document.getElementById('labelOutsideFee');
+
+        if (radioInside && labelInside) {
+            radioInside.value = insideRate;
+            labelInside.textContent = `৳ ${insideRate}`;
+        }
+        if (radioOutside && labelOutside) {
+            radioOutside.value = outsideRate;
+            labelOutside.textContent = `৳ ${outsideRate}`;
+        }
+
+        if (cart.length === 0) {
+            checkoutItemsList.innerHTML = '<p style="color: #a1a1aa; font-size: 0.9rem;">No creations in bag.</p>';
+        } else {
+            checkoutItemsList.innerHTML = '';
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                itemsSubtotal += itemTotal;
+
+                const itemDiv = document.createElement('div');
+                itemDiv.style.display = 'flex';
+                itemDiv.style.justifyContent = 'space-between';
+                itemDiv.style.alignItems = 'center';
+                itemDiv.style.marginBottom = '12px';
+                itemDiv.innerHTML = `
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <img src="${item.image}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 3px;">
                     <div>
@@ -588,65 +608,92 @@ if (checkoutForm && checkoutItemsList) {
                 </div>
                 <span style="color: #d4af37; font-size: 0.9rem; font-weight: 600;">৳ ${Number(itemTotal).toLocaleString()}</span>
             `;
-            checkoutItemsList.appendChild(itemDiv);
-        });
-    }
-
-    const subtotalEl = document.getElementById('checkoutSubtotal');
-    const totalEl = document.getElementById('checkoutTotal');
-    if (subtotalEl) subtotalEl.textContent = `৳ ${Number(grandTotal).toLocaleString()}`;
-    if (totalEl) totalEl.textContent = `৳ ${Number(grandTotal).toLocaleString()}`;
-
-    checkoutForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        if (cart.length === 0) {
-            alert('Your bag is empty! Please add products before placing an order.');
-            return;
+                checkoutItemsList.appendChild(itemDiv);
+            });
         }
 
-        const orderData = {
-            orderId: 'OXY-' + Math.floor(100000 + Math.random() * 900000),
-            customerName: document.getElementById('custName')?.value || 'Guest',
-            email: document.getElementById('custEmail')?.value || '',
-            phone: document.getElementById('custPhone')?.value || '',
-            address: `${document.getElementById('custAddress')?.value || ''}, ${document.getElementById('custCity')?.value || ''}, ${document.getElementById('custCountry')?.value || ''}`,
-            items: cart,
-            totalAmount: grandTotal,
-            paymentMethod: 'Cash on Delivery',
-            status: 'Pending'
-        };
+        const subtotalEl = document.getElementById('checkoutSubtotal');
+        const totalEl = document.getElementById('checkoutTotal');
 
-        const submitBtn = document.getElementById('placeOrderBtn');
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Processing Order...';
+        function updateTotalDisplay() {
+            if (subtotalEl) subtotalEl.textContent = `৳ ${Number(itemsSubtotal).toLocaleString()}`;
+            const total = itemsSubtotal + selectedShipping;
+            if (totalEl) totalEl.textContent = `৳ ${Number(total).toLocaleString()}`;
+        }
 
-        try {
-            const res = await fetch('http://localhost:5000/api/orders', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(orderData)
+        updateTotalDisplay();
+
+        // Delivery charge radio change listener
+        document.querySelectorAll('input[name="deliveryCharge"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                selectedShipping = parseInt(e.target.value) || 0;
+                updateTotalDisplay();
             });
-            const data = await res.json();
+        });
 
-            if (data.success) {
-                localStorage.removeItem('oxylacy_cart');
-                alert('✨ Congratulations! Your order has been placed successfully.\nOrder ID: #' + (data.order.orderId || data.order.id));
-                window.location.href = 'index.html';
-            } else {
-                alert('Order placement failed: ' + (data.error || 'Server error'));
+        // Handle Order Submit
+        checkoutForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (cart.length === 0) {
+                alert('Your bag is empty! Please add products before placing an order.');
+                return;
+            }
+
+            const deliverySelected = document.querySelector('input[name="deliveryCharge"]:checked');
+            if (!deliverySelected) {
+                alert('Please select a delivery area (Inside or Outside Dhaka).');
+                return;
+            }
+
+            const shippingFee = parseInt(deliverySelected.value);
+            const finalGrandTotal = itemsSubtotal + shippingFee;
+
+            const orderData = {
+                customer: {
+                    name: document.getElementById('custName')?.value || '',
+                    email: document.getElementById('custEmail')?.value || '',
+                    phone: document.getElementById('custPhone')?.value || '',
+                    country: document.getElementById('custCountry')?.value || 'Bangladesh',
+                    address: document.getElementById('custAddress')?.value || '',
+                    city: document.getElementById('custCity')?.value || '',
+                    postal: document.getElementById('custPostal')?.value || ''
+                },
+                items: cart,
+                deliveryCharge: shippingFee,
+                totalAmount: finalGrandTotal,
+                paymentMethod: 'Cash On Delivery'
+            };
+
+            const submitBtn = document.getElementById('placeOrderBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Processing Order...';
+
+            try {
+                const res = await fetch('http://localhost:5000/api/orders', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(orderData)
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    localStorage.removeItem('oxylacy_cart');
+                    alert('✨ Congratulations! Your order has been placed successfully.\nOrder ID: ' + (data.order?._id || data.order?.orderId || data.order?.id));
+                    window.location.href = 'index.html';
+                } else {
+                    alert('Order placement failed: ' + (data.message || 'Server error'));
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'CONFIRM & PLACE ATELIER ORDER';
+                }
+            } catch (err) {
+                console.error('Order error:', err);
+                alert('Failed to connect to the server.');
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'CONFIRM & PLACE ATELIER ORDER';
             }
-        } catch (err) {
-            console.error('Order error:', err);
-            alert('Failed to connect to the server.');
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'CONFIRM & PLACE ATELIER ORDER';
-        }
-    });
-}
-
+        });
+    }
     /* =======================================================
        11. Contact Form Submission
     ======================================================= */
