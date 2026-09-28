@@ -382,8 +382,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const productId = urlParams.get('id');
             const title = document.querySelector('.details-title')?.textContent || 'Luxury Product';
             const priceEl = document.querySelector('.details-price');
-            const mainPriceText = priceEl ? (priceEl.cloneNode(true).querySelector('span')?.remove(), priceEl.textContent) : '0';
-            const price = parseFloat(mainPriceText.replace(/[^0-9.]/g, '')) || 0;
+            let price = 0;
+            if (priceEl) {
+                const clone = priceEl.cloneNode(true);
+                clone.querySelectorAll('span, del, s, small').forEach(el => el.remove());
+                const cleanText = clone.textContent.trim();
+                price = parseFloat(cleanText.replace(/[^0-9.]/g, '')) || 0;
+            }
             const img = document.getElementById('mainProductImg')?.getAttribute('src') || '';
             const qtyInput = document.querySelector('.qty-input');
             const quantity = qtyInput ? parseInt(qtyInput.value) || 1 : 1;

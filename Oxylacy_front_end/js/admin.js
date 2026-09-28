@@ -579,6 +579,162 @@ document.getElementById('addProductForm')?.addEventListener('submit', async (e) 
     }
 });
 
+// =======================================================
+// Edit Product System
+// =======================================================
+
+const editProductModal = document.getElementById('editProductModal');
+const editProductForm = document.getElementById('editProductForm');
+const closeEditModalBtn = document.getElementById('closeEditModalBtn');
+const cancelEditModalBtn = document.getElementById('cancelEditModalBtn');
+
+// Open Edit Modal & Load Existing Product Data
+async function openEditModal(id) {
+    try {
+        const res = await fetch(`${API_BASE}/products/${id}`);
+
+        if (!res.ok) {
+            throw new Error('Failed to fetch product');
+        }
+
+        const product = await res.json();
+
+        document.getElementById('editPId').value = product.id;
+        document.getElementById('editPName').value = product.name || '';
+        document.getElementById('editPPrice').value = product.price ?? '';
+        document.getElementById('editPOriginalPrice').value = product.originalPrice ?? '';
+        document.getElementById('editPTag').value = product.tag || '';
+        document.getElementById('editPImage').value = product.image || '';
+        document.getElementById('editPDescription').value = product.description || '';
+
+        // Make sure latest categories are loaded
+        await fetchCategories();
+
+        const categorySelect = document.getElementById('editPCategory');
+
+        if (categorySelect) {
+            categorySelect.value = product.category || '';
+
+            // Safety fallback if old product category no longer exists
+            if (
+                product.category &&
+                !Array.from(categorySelect.options).some(
+                    option => option.value === product.category
+                )
+            ) {
+                const oldOption = document.createElement('option');
+                oldOption.value = product.category;
+                oldOption.textContent = `${product.category} (Old Category)`;
+                categorySelect.appendChild(oldOption);
+                categorySelect.value = product.category;
+            }
+        }
+
+        if (editProductModal) {
+            editProductModal.style.display = 'flex';
+        }
+
+    } catch (err) {
+        console.error('Error opening product editor:', err);
+        alert('Unable to load this product for editing.');
+    }
+}
+
+
+// Close Edit Modal
+function closeEditProductModal() {
+    if (editProductModal) {
+        editProductModal.style.display = 'none';
+    }
+
+    if (editProductForm) {
+        editProductForm.reset();
+    }
+}
+
+
+// X Button
+if (closeEditModalBtn) {
+    closeEditModalBtn.addEventListener('click', closeEditProductModal);
+}
+
+
+// Cancel Button
+if (cancelEditModalBtn) {
+    cancelEditModalBtn.addEventListener('click', closeEditProductModal);
+}
+
+
+// Close Modal When Clicking Outside
+if (editProductModal) {
+    editProductModal.addEventListener('click', (e) => {
+        if (e.target === editProductModal) {
+            closeEditProductModal();
+        }
+    });
+}
+
+
+// Save Edited Product
+if (editProductForm) {
+    editProductForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const id = document.getElementById('editPId').value;
+
+        if (!id) {
+            alert('Product ID is missing.');
+            return;
+        }
+
+        const payload = {
+            name: document.getElementById('editPName').value.trim(),
+            category: document.getElementById('editPCategory').value,
+            price: parseFloat(document.getElementById('editPPrice').value),
+
+            originalPrice: document.getElementById('editPOriginalPrice').value
+                ? parseFloat(document.getElementById('editPOriginalPrice').value)
+                : null,
+
+            tag: document.getElementById('editPTag').value.trim(),
+            image: document.getElementById('editPImage').value.trim(),
+            description: document.getElementById('editPDescription').value.trim()
+        };
+
+        if (!payload.name || !payload.category || Number.isNaN(payload.price) || !payload.image) {
+            alert('Please fill in all required product information.');
+            return;
+        }
+
+        try {
+            const res = await fetch(`${API_BASE}/products/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const result = await res.json();
+
+            if (!res.ok) {
+                throw new Error(result.error || 'Failed to update product');
+            }
+
+            alert('Product updated successfully!');
+
+            closeEditProductModal();
+
+            // Reload inventory from database
+            await fetchProductsAndBestSellers();
+
+        } catch (err) {
+            console.error('Error updating product:', err);
+            alert(err.message || 'Unable to update product.');
+        }
+    });
+}
+
 // Delete Product
 async function deleteProductItem(id) {
     if (confirm('Are you sure you want to remove this product?')) {
